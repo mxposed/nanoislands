@@ -1,0 +1,12 @@
+<%
+    var classes = ['nb-island'];
+
+    if (data.padding) {
+        classes.push('nb-island_padding_' + data.padding);
+    }
+
+    if (data.type) {
+        classes.push('nb-island_type_' + data.type);
+    }
+
+%><div <%= EJS['_attrs']({ source: data, classes: classes }) %>><%= data.content %></div>

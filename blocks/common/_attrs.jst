@@ -1,0 +1,42 @@
+<%
+    var attrs = data.attrs || {};
+    var classes = data.classes || [];
+    var data_nb = data.nb || [];
+    var data_nb_x = data.nb_x || {};
+    var result = [];
+
+    if (data.source.id) {
+        attrs.id = data.source.id;
+    }
+
+    if (data.source.attrs) {
+        for (var key in data.source.attrs) {
+            attrs[key] = data.source.attrs[key];
+        }
+    }
+
+    if (data.source['data-nb']) {
+        for (var key in data.source['data-nb']) {
+            data_nb_x[key] = data.source['data-nb'][key];
+        }
+    }
+
+    classes = classes.concat(data.source['class'] || []);
+    data_nb = data_nb.concat(data.source['mixin-nb'] || []);
+
+    if (classes.length) {
+        attrs['class'] = classes.join(' ');
+    }
+
+    if (data_nb.length) {
+        attrs['data-nb'] = data_nb.join(' ');
+    }
+
+    for (var key in data_nb_x) {
+        attrs['data-nb-' + key] = data_nb_x[key];
+    }
+
+    for (var key in attrs) {
+        result.push(key + '="' + attrs[key] + '"');
+    }
+%><%= result.join(' ') %>

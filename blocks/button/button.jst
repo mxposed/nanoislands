@@ -1,0 +1,26 @@
+<%
+    var nb = data.static ? [] : ['button'];
+    var classes = ['nb-button', '_init'];
+    var attrs = {};
+
+    classes.push('nb-button_size_' + (data.size || 'm'));
+    classes.push('nb-button_theme_' + (data.theme || 'normal'));
+
+    if (data.disabled) {
+        classes.push('nb-button_disabled');
+        attrs.disabled = 'disabled';
+    }
+
+    if (!data.content && data.icon) {
+        classes.push('nb-button_only-icon');
+    }
+
+%><button <%= EJS['_attrs']({ source: data, nb: nb, classes: classes, attrs: attrs }) %>><%
+    if (data.icon) {
+        print(EJS.icon(data.icon))
+    }
+
+    if (data.content) {
+        %><span class="nb-button__text"><%- content %></span><%
+    }
+%></button>
