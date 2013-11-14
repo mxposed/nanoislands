@@ -267,6 +267,8 @@
         // Храним исходное положение попапа, чтобы возвращать его на место
         var previous = this.node.previousSibling;
         this._home = previous ? { previous: previous } : { parent: this.node.parentNode };
+
+        this._move = popup._move;
     };
 
     // ----------------------------------------------------------------------------------------------------------------- //
