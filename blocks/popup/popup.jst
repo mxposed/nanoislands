@@ -1,0 +1,26 @@
+<%
+    var nb = ['popup'];
+    var classes = ['nb-popup', '_hidden'];
+    var nb_x = data.tail ? { 'tail': data.tail } : {};
+%><div <%= JST['_attrs']({ source: data, nb: nb, classes: classes, nb_x: nb_x }) %>><%
+
+    if (data.title) {
+        %><div <%= JST['_attrs']({ source: data.title, classes: ['nb-popup__title'] }) %>><%
+            if (data.title.data) {
+                print(data.title.data);
+            } else {
+                print(data.title);
+            }
+        %></div><%
+    }
+
+    if (data.content) {
+        %><div <%= JST['_attrs']({ source: data.content, classes: ['nb-popup__content'] }) %>><%
+            if (data.content.data) {
+                print(data.content.data);
+            } else {
+                print(data.content);
+            }
+        %></div><%
+    }
+%></div><%

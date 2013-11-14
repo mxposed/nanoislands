@@ -5,24 +5,26 @@
     var data_nb_x = data.nb_x || {};
     var result = [];
 
-    if (data.source.id) {
-        attrs.id = data.source.id;
-    }
-
-    if (data.source.attrs) {
-        for (var key in data.source.attrs) {
-            attrs[key] = data.source.attrs[key];
+    if (data.source) {
+        if (data.source.id) {
+            attrs.id = data.source.id;
         }
-    }
 
-    if (data.source['data-nb']) {
-        for (var key in data.source['data-nb']) {
-            data_nb_x[key] = data.source['data-nb'][key];
+        if (data.source.attrs) {
+            for (var key in data.source.attrs) {
+                attrs[key] = data.source.attrs[key];
+            }
         }
-    }
 
-    classes = classes.concat(data.source['class'] || []);
-    data_nb = data_nb.concat(data.source['mixin-nb'] || []);
+        if (data.source['data-nb']) {
+            for (var key in data.source['data-nb']) {
+                data_nb_x[key] = data.source['data-nb'][key];
+            }
+        }
+
+        classes = classes.concat(data.source['class'] || []);
+        data_nb = data_nb.concat(data.source['mixin-nb'] || []);
+    }
 
     if (classes.length) {
         attrs['class'] = classes.join(' ');

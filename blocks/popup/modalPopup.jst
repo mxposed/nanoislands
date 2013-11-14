@@ -1,0 +1,59 @@
+<%
+    var nb = [];
+    var classes = ['nb-popup', 'nb-popup_type_modal'];
+    var nb_x = {
+        'modal': 'true',
+        'width': 'auto',
+        'height': 'auto',
+        'minHeight': 'auto'
+    };
+
+    if (!data.static) {
+        nb.push('popup');
+        classes.push('_hidden');
+    }
+
+    if (data.theme) {
+        classes.push('nb-popup_theme_' + data.theme);
+    }
+
+%><div <%= JST['_attrs']({ source: data, nb: nb, classes: classes, nb_x: nb_x }) %>><%
+
+    %><div <%= JST['_attrs']({ classes: ['nb-popup__i'] }) %>><%
+        if (data.close) {
+            %><a <%= JST['_attrs']({ classes: ['nb-popup__close', data.close.class], attrs: data.close.attrs }) %>></a><%
+        }
+
+        if (data.title) {
+            %><div <%= JST['_attrs']({ source: data.title, classes: ['nb-popup__title'] }) %>><%
+                if (data.title.data) {
+                    print(data.title.data);
+                } else {
+                    print(data.title);
+                }
+            %></div><%
+        }
+
+        if (data.content) {
+            %><div <%= JST['_attrs']({ source: data.content, classes: ['nb-popup__content'] }) %>><%
+                if (data.content.data) {
+                    print(data.content.data);
+                } else {
+                    print(data.content);
+                }
+            %></div><%
+        }
+
+        if (data.buttons) {
+            %><div <%= JST['_attrs']({ source: data.buttons, classes: ['nb-popup__buttons'] }) %>><%
+                if (data.buttons.data.length) {
+                    data.buttons.data.forEach(function (item) {
+                        print(JST['button'](item));
+                    });
+                } else {
+                    print(data.content.data);
+                }
+            %></div><%
+        }
+    %></div><%
+%></div>

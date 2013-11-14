@@ -1,0 +1,28 @@
+<%
+    var nb = [];
+    var classes = ['nb-popup'];
+    var nb_x = {};
+
+    if (!data.static) {
+        nb.push('popup');
+        classes.push('_hidden');
+    }
+
+    if (data.tail) {
+        nb_x['tail'] = data.tail;
+    }
+
+%><div <%= JST['_attrs']({ source: data, nb: nb, classes: classes, nb_x: nb_x }) %>><%
+    if (data.menu) {
+        data.menu.forEach(function (data) {
+            if (data.separator) {
+                %><div class="nb-popup__separator"></div><%
+            } else {
+                var classes = ['nb-popup__line'];
+                var attrs = data.href ? { href: data.href } : {};
+
+                %><a <%= JST['_attrs']({ source: data, classes: classes, attrs: attrs }) %>><%= data.text %></a><%
+            }
+        });
+    }
+%></div>
