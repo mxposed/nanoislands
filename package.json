@@ -28,15 +28,16 @@
   },
   "files": [
     "blocks",
-    "libs",
+    "build",
     "demo",
+    "externals.yate.js",
+    "libs",
+    "Makefile",
     "nanoislands.js",
     "nanoislands.yate",
     "nanoislands.styl",
     "nanoislands.css",
-    "nanoislands.ie.css",
-    "externals.yate.js",
-    "Makefile"
+    "nanoislands.ie.css"
   ],
   "scripts": {
     "postinstall": "make"
