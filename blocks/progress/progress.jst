@@ -1,0 +1,28 @@
+<%
+    var bar = data.bar || 'true';
+    var type = data.type || 'percentage';
+    var start = data.start || '0';
+    var title = data.title || ' ';
+
+    var nb = ['progress'];
+    var classes = ['nb-progress', '_init', 'nb-progress_type_' + type];
+    var nb_x = {
+        'type': type,
+        'progress': start
+    };
+
+%><div <%= JST['_attrs']({ source: data, nb: nb, classes: classes, nb_x: nb_x }) %>><%
+    if (bar === 'true') {
+        %><div class="nb-progress__bar js-bar" style="width: <%= start %>%"></div><%
+    }
+
+    if (title) {
+        %><div class="nb-progress__title js-title"><%
+            if (type === 'percentage') {
+                print(start + '%');
+            } else {
+                print(title);
+            }
+        %></div><%
+    }
+%></div><%
