@@ -11,13 +11,9 @@ for (var key in defaults) {
 }
 
 var nb = ['progress'];
-var classes = ['nb-progress', '_init'];
-var attrs = {};
-
-classes.push('nb-progress_type_' + data.type);
-
-attrs['data-nb-progress'] = data.start;
-%><div <%=JST._attrs({source: data, nb: nb, classes: classes, attrs: attrs})%>><%
+var classes = ['nb-progress', '_init', 'nb-progress_type_' + data.type];
+var nb_x = { progress: data.start };
+%><div <%=JST._attrs({source: data, nb: nb, classes: classes, nb_x: nb_x})%>><%
 
     if (data.bar) {
         %><div class="nb-progress__bar js-bar" style="width: <%-data.start%>%;"></div><%
