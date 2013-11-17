@@ -1,0 +1,36 @@
+<div class="demo-section">
+    <div class="demo-h3">
+        Size: M
+        <span class="demo-code demo-code_small">
+            .nb-input_size_m
+        </span>
+    </div>
+
+    <%=JST.demo_show(JST.input({content: 'Москва и Питер', size: 'm'}))%>
+</div>
+
+<div class="demo-section">
+    <div class="demo-h3">
+        Size: S
+        <span class="demo-code demo-code_small">
+            .nb-input_size_s
+        </span>
+    </div>
+
+    <%=JST.demo_show(JST.input({content: 'Москва'}))%>
+</div>
+
+<div class="demo-section">
+    <div class="demo-h3">
+        Disabled
+        <span class="demo-code demo-code_small">
+            .nb-input_disabled
+        </span>
+    </div>
+    <%=JST.demo_show(JST.input({content: 'Москва', disabled: true}))%>
+</div>
+
+<div class="demo-section">
+    <div class="demo-h3">Maxlength</div>
+    <%=JST.demo_show(JST.input({attrs: {length: 11, maxlength: 11, placeholder: '11 символов'}}))%>
+</div>

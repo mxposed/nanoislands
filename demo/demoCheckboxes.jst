@@ -1,0 +1,78 @@
+<div class="demo-section">
+    <div class="demo-h3">Type: Radio</div>
+    <%=JST.demo_show(JST.demoCheckboxes_radio())%>
+</div>
+
+<div class="demo-section">
+    <div class="demo-h3">Type: Checkbox</div>
+    <%=JST.demo_show(JST.demoCheckboxes_check())%>
+</div>
+
+<div class="demo-section">
+    <div class="demo-h3">
+        Size: S
+        <span class="demo-code demo-code_small">.nb-checkbox_size_s</span>
+    </div>
+    <%=JST.demo_show(JST.demoCheckboxes_small())%>
+</div>
+
+/* radio */
+<%=JST.checkbox({
+    'type': 'radio',
+    'text': 'Человек',
+    'attrs': {
+        'name': 'biotype'
+    }
+})%>
+<br />
+<%=JST.checkbox({
+    'type': 'radio',
+    'text': 'Паук',
+    'attrs': {
+        'name': 'biotype'
+    }
+})%>
+
+/* check */
+
+<%=JST.checkbox({
+    'text': 'Дерево',
+    'checked': true,
+    'attrs': {
+        'name': 'task'
+    }
+})%>
+<br />
+<%=JST.checkbox({
+    'text': 'Сын',
+    'attrs': {
+        'name': 'task'
+    }
+})%>
+<br />
+<%=JST.checkbox({
+    'text': 'Дом',
+    'attrs': {
+        'name': 'task'
+    }
+})%>
+
+/* small */
+<%=JST.checkbox({
+    'type': 'radio',
+    'size': 's',
+    'text': 'JavaScript',
+    'checked': true,
+    'attrs': {
+        'name': 'language'
+    }
+})%>
+<br />
+<%=JST.checkbox({
+    'type': 'radio',
+    'size': 's',
+    'text': 'Java',
+    'attrs': {
+        'name': 'language'
+    }
+})%>

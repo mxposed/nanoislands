@@ -1,0 +1,141 @@
+<div class="demo-section">
+    <div class="demo-h3">
+        Size: M
+        <span class="demo-code demo-code_small">
+            .nb-button_size_m
+        </span>
+    </div>
+
+    <%=JST.demo_show(JST.demoButtons_medium())%>
+</div>
+<div class="demo-section">
+    <div class="demo-h3">
+        Size: S
+        <span class="demo-code demo-code_small">
+            .nb-button_size_s
+        </span>
+    </div>
+
+    <%=JST.demo_show(JST.demoButtons_small())%>
+</div>
+<div class="demo-section">
+    <div class="demo-h3">
+        Theme: Action
+        <span class="demo-code demo-code_small">
+            .nb-button_theme_action
+        </span>
+    </div>
+
+    <%=JST.demo_show(JST.demoButtons_action())%>
+</div>
+<div class="demo-section">
+    <div class="demo-h3">
+        Theme: Pseudo
+        <span class="demo-code demo-code_small">
+            .nb-button_theme_pseudo
+        </span>
+    </div>
+
+    <%=JST.demo_show(JST.demoButtons_pseudo())%>
+</div>
+<div class="demo-section">
+    <div class="demo-h3">
+        Theme: Dark
+        <span class="demo-code demo-code_small">
+            .nb-button_theme_dark
+        </span>
+    </div>
+
+    <%=JST.demo_show(JST.demoButtons_dark())%>
+</div>
+<div class="demo-section">
+    <div class="demo-h3">
+        Disabled
+        <span class="demo-code demo-code_small">
+            .nb-button_disabled
+        </span>
+    </div>
+
+    <%=JST.demo_show(JST.demoButtons_disabled())%>
+</div>
+<div class="demo-section">
+    <div class="demo-h3">
+        Кнопка с иконкой
+    </div>
+
+    <%=JST.demo_show(JST.demoButtons_images())%>
+</div>
+<div class="demo-section">
+    <div class="demo-h3">
+        Радио-группа
+    </div>
+
+    #TODO
+    <%=JST.demo_show(JST.demoButtons_radio())%>
+</div>
+<div class="demo-section">
+    <div class="demo-h3">
+        Type: Attach
+        <span class="demo-code demo-code_small">
+            .nb-button_type_attach
+        </span>
+    </div>
+
+    <%=JST.demo_show(JST.demoButtons_attach())%>
+</div>
+
+/* medium */
+<%=JST.button({content: 'Применить'})%>
+<%=JST.button({content: 'Проверить', href:'#'})%>
+
+/* small */
+<%=JST.button({content: 'Применить', size: 's'})%>
+
+/* action */
+<%=JST.button({content: 'Отправить', size: 'm', theme: 'action'})%>
+
+/* pseudo */
+<%=JST.button({content: 'Применить', size: 'm', theme: 'pseudo'})%>
+
+/* dark */
+<%=JST.button({content: 'Готово', size: 'm', theme: 'dark'})%>
+
+/* images */
+<%=JST.button({icon: 'eye'})%>
+<%=JST.button({icon: 'link', content: 'Открыть'})%>
+
+/* disabled */
+<%=JST.button({content: 'Кнопка', disabled: true})%>
+
+/* radio */
+<!--
+func radio-button() {
+nb-radio-button({
+'size': 'm'
+'name': 'btn'
+'group':  [
+{
+'content': 'Все'
+'value': 'btn1'
+}
+{
+'content': 'Непрочитанные'
+'value': 'btn3'
+'checked': true()
+}
+{
+'content': 'Прочитанные'
+'value': 'btn4'
+}
+{
+'content': 'Удаленные'
+'value': 'btn2'
+'disabled': true()
+}
+]
+})
+}
+-->
+
+/* attach */
+<%=JST.button({content: 'Прикрепить файл', 'class': ['myclass1', 'myclass2'], theme: 'action', type: 'file'})%>

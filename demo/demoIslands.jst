@@ -1,0 +1,29 @@
+<div class="demo-section">
+    <%=JST.demo_show(JST.island({
+        content: 'Остров миу-миу',
+        attrs: {
+            style: 'height: 100px; width: 200px;'
+        }
+    }))%>
+</div>
+<div class="demo-section">
+    <%=JST.demo_show(JST.island({
+        content: 'Летающий остров',
+        type: 'fly',
+        padding: 'm',
+        attrs: {
+            style: 'height: 100px; width: 200px;'
+        }
+    }))%>
+</div>
+<div class="demo-section">
+    <div class="demo-h3">
+        Padding: L, Inline
+        <span class="demo-code demo-code_small">.nb-island_padding_l.nb-island_inline</span>
+    </div>
+    <%=JST.demo_show(JST.island({
+                content: 'Остров с паддингами и инлайном',
+                type: 'inline',
+                padding: 'l'
+            }))%>
+</div>

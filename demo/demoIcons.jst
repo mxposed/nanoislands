@@ -1,0 +1,56 @@
+<div class="demo-section">
+    <div class="demo-h3">
+        Size: S
+        <span class="demo-code demo-code_small">.nb-icon_size_s</span>
+    </div>
+    <%=JST.demoIcons_all({size: 's', white: false})%>
+</div>
+<div class="demo-section">
+    <div class="demo-h3">
+        Size: M
+        <span class="demo-code demo-code_small">.nb-icon_size_m</span>
+    </div>
+    <%=JST.demoIcons_all({size: 'm', white: false})%>
+</div>
+<div class="demo-section demo-section_dark">
+    <div class="demo-h3">
+        White
+    </div>
+    <%=JST.demoIcons_all({size: 's', white: true})%>
+    <%=JST.demoIcons_all({size: 'm', white: true})%>
+</div>
+
+/* all */
+<%
+    var all_icons;
+    if (data.white) {
+        all_icons = [
+            'download_white',
+            'link_white',
+            'trash_white'
+        ];
+    } else {
+        all_icons = [
+            'close',
+            'download',
+            'people',
+            'help',
+            'eye',
+            'link',
+            'pause',
+            'play',
+            'three-dots',
+            'trash',
+            'mail',
+            'vk',
+            'twitter',
+            'odnoklassniki'
+        ];
+    }
+
+    all_icons.forEach(function (icon) {
+
+        print(JST.icon({icon: icon, size: data.size}));
+
+    });
+%>

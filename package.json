@@ -15,11 +15,12 @@
   "dependencies": {
     "stylobate": "0.19.x",
     "stylobate-islands": "0.16.x",
-    "yate": "0.0.64",
+    "yate": "0.0.65",
     "borschik": "0.4.x",
     "autoprefixer": "0.7.x",
     "stylus": "0.39.x",
-    "csso": "1.3.x"
+    "csso": "1.3.x",
+    "universal-jst": "https://github.com/abalandin/universal-jst/tarball/master"
   },
   "devDependencies": {
   },

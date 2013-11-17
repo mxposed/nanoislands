@@ -1,0 +1,163 @@
+<%
+    var defaults = {
+        'id': 'popup',
+        'menu': [{
+            'href': '#',
+            'text': 'Скопировать'
+        },{
+            'href': '#',
+            'text': 'Переместить'
+        },{
+            'separator': true
+        },{
+            'href': '#',
+            'text': 'Удалить'
+        }]
+    };
+
+    var toRight = {
+        'id': 'popup1',
+        'menu': [{
+            'href': '#',
+            'text': 'Скопировать'
+        },{
+            'href': '#',
+            'text': 'Переместить'
+        },{
+            'href': '#',
+            'text': 'Удалить'
+        }]
+    };
+
+    var toLeft = {
+        'id': 'popup2',
+        'tail': 'top',
+        'menu': [{
+            'href': '#',
+            'text': 'Скопировать'
+        },{
+            'href': '#',
+            'text': 'Переместить'
+        },{
+            'href': '#',
+            'text': 'Удалить'
+        }]
+    };
+
+    var toTop = {
+        'id': 'popup3',
+        'tail': 'left',
+        'menu': [{
+            'href': '#',
+            'text': 'Скопировать'
+        },{
+            'href': '#',
+            'text': 'Переместить'
+        },{
+            'href': '#',
+            'text': 'Удалить'
+        }]
+    };
+
+    var modal = {
+        'id': 'popup4',
+        'title': 'Some modal popup',
+        'content': 'Some text for that popup',
+        'data-nb': {
+            'width': '300px'
+        },
+        'close': {
+            'class': 'ns-action',
+            'attrs': {
+            'data-params': '123'
+            }
+        },
+        'buttons': {
+            'class': 'ns-subliew-buttons',
+            'data': [{
+                'content': 'Отправить',
+                'size': 'm',
+                'theme': 'action',
+                'class': 'nb-popup__button'
+            },{
+                'content': 'Сохранить',
+                'size': 'm',
+                'class': 'nb-popup__button'
+            }]
+        }
+    };
+%>
+<div class="demo-section">
+    <div class="demo-group">
+        <%=JST.demo_podium(JST.demoPopups_toggleDefault())%>
+        <%=JST.demo_code(JST.demoPopups_toggleDefault())%>
+        <%=JST.demo_code(JST.popupMenu(defaults))%>
+    </div>
+
+    <%=JST.popupMenu(defaults)%>
+</div>
+<div class="demo-section">
+    <div class="demo-group">
+        <%=JST.demo_podium(JST.demoPopups_toggleToRight())%>
+        <%=JST.demo_code(JST.demoPopups_toggleToRight())%>
+        <%=JST.demo_code(JST.popupMenu(toRight))%>
+    </div>
+
+    <%=JST.popupMenu(toRight)%>
+</div>
+
+<div class="demo-section">
+    <div class="demo-group">
+        <%=JST.demo_podium(JST.demoPopups_toggleToLeft())%>
+        <%=JST.demo_code(JST.demoPopups_toggleToLeft())%>
+        <%=JST.demo_code(JST.popupMenu(toLeft))%>
+    </div>
+
+    <%=JST.popupMenu(toLeft)%>
+</div>
+
+
+<div class="demo-section">
+    <div class="demo-group">
+        <%=JST.demo_podium(JST.demoPopups_toggleToTop())%>
+        <%=JST.demo_code(JST.demoPopups_toggleToTop())%>
+        <%=JST.demo_code(JST.popupMenu(toTop))%>
+    </div>
+
+    <%=JST.popupMenu(toTop)%>
+</div>
+
+<div class="demo-section">
+    <div class="demo-group">
+        <%=JST.demo_podium(JST.demoPopups_toggleModal())%>
+        <%=JST.demo_code(JST.demoPopups_toggleModal())%>
+        <%=JST.demo_code(JST.popup(modal))%>
+    </div>
+
+    <%=JST.popup(modal)%>
+</div>
+
+/* toggleDefault */
+    <a class="nb link link_wrapper link_pseudo" data-nb="popup-toggler" data-nb-popup-toggler="{id: 'popup'}" href="#default">
+        <span class="link__inner">Попап по умолчанию</span>
+    </a>
+
+/* toggleToRight */
+    <a class="nb link link_wrapper link_pseudo" data-nb="popup-toggler" data-nb-popup-toggler="{id: 'popup1', how: { at: 'left', my: 'right' }}" href="#right">
+        <span class="link__inner">Попап справа</span>
+    </a>
+
+/* toggleToLeft */
+    <a class="nb link link_wrapper link_pseudo" data-nb="popup-toggler" data-nb-popup-toggler="{id: 'popup2', how: { at: 'right top', my: 'left' }}" href="#left">
+        <span class="link__inner">Попап слева</span>
+    </a>
+
+/* toggleToTop */
+    <a class="nb link link_wrapper link_pseudo" data-nb="popup-toggler" data-nb-popup-toggler="{id: 'popup3', how: { at: 'top', my: 'bottom' }}" href="#top">
+        <span class="link__inner">Попап сверху</span>
+    </a>
+
+/* toggleModal */
+    <a class="nb link link_wrapper link_pseudo" data-nb="popup-toggler" data-nb-popup-toggler="{id: 'popup4'}" href="#modal">
+        <span class="link__inner">Модальный Попап</span>
+    </a>
