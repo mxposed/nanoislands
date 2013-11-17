@@ -18,6 +18,8 @@
     <script src="demo.jst.js"></script>
 
     <script src="../nanoislands.js"></script>
+
+    <script type="text/javascript" src="beautify-html.js"></script>
 </head>
 <body>
 <div class="content content_hide-html"></div>
@@ -32,23 +34,32 @@
 
 </script>
 
-<script type="text/javascript" src="beautify-html.js"></script>
 <script type="text/javascript">
 
     $(function() {
         function unescapeHTML(input) {
             var e = document.createElement('div');
             e.innerHTML = input;
-            return e.childNodes.length === 0 ? '' : e.childNodes[0].nodeValue;
+            var res = [];
+            var i, l;
+            for (i = 0, l = e.childNodes.length; i < l; i++) {
+                res.push(e.childNodes[i].nodeValue);
+            }
+            return res.join('');
         }
 
         $('.js-beautify').each(function() {
             var $el = $(this);
+            var html = $el.html();
 
-            $el.text(html_beautify(unescapeHTML($el.html()), {
+            //FIXME что это было?
+            //html = unescapeHTML($el.html());
+
+            html = html_beautify(html, {
                 unformatted: [],
                 wrap_line_length: 80
-            }));
+            });
+            $el.text(html);
         });
 
         var $content = $('.content');
