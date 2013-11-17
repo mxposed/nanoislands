@@ -1,0 +1,48 @@
+<%
+var nb = ['input'];
+var classes = ['nb-input', '_init'];
+var attrs = {};
+
+classes.push('nb-input_size_' + (data.size || 's'));
+if (data.disabled) {
+    classes.push('is-disabled');
+    attrs.disabled = 'disabled';
+    attrs['data-nb-disabled'] = true;
+}
+
+if (data.label || data.left || data.right || data.reset) {//complex
+
+    attrs['data-nb-type'] = 'complex';
+    classes.push('nb-input_type_complex');
+
+    %><label <%= JST['_attrs']({ source: data, nb: nb, classes: classes, attrs: attrs }) %>><%
+        if (data.reset) {
+            %><span class="nb-input__reset"></span><%
+        }
+        var input_attrs = {};
+        for (var key in data.attrs) {
+            input_attrs[key] = data.attrs[key];
+        }
+        if (data.disabled) {
+            input_attrs['disabled'] = 'disabled';
+        }
+        %><span class="nb-input__content"><%
+            %><input <%= JST['_attrs']({ classes: ['nb-input__controller'], attrs: input_attrs }) %>> value="<%-data.content%>" /><%
+            %><span class="nb-input__view">&nbsp;</span><%
+        %></span><%
+    %></label><%
+
+} else {//simple
+
+    attrs['data-nb-type'] = 'simple';
+    classes.push('nb-input_type_simple');
+
+    if (data.disabled) {
+        classes.push('is-disabled');
+        attrs.disabled = 'disabled';
+        attrs['data-nb-disabled'] = true;
+    }
+
+    %><input <%= JST['_attrs']({ source: data, nb: nb, classes: classes, attrs: attrs }) %> value="<%-data.content%>" /><%
+}
+%>

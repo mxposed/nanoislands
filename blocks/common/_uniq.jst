@@ -1,0 +1,7 @@
+<%
+    //generates node id for blocks
+    if (!JST.nextUniq) {
+        JST.nextUniq = 0;
+    }
+    print(data.prefix + (++JST.nextUniq));
+%>

@@ -1,0 +1,14 @@
+<%
+var nb = ['loader'];
+var classes = ['nb-loader'];
+var attrs = {};
+
+classes.push('nb-loader_size_' + (data.size || 'm'));
+
+%><span <%=JST._attrs({source: data, nb: nb, classes: classes, attrs: attrs})%>><%
+    var spinner_classes = ['nb-loader__spinner'];
+    if (data.color) {
+        spinner_classes.push('nb-loader__spinner_color_' + data.color);
+    }
+    %><span <%=JST._attrs({classes: spinner_classes})%>></span><%
+%></span>

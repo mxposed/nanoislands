@@ -1,0 +1,35 @@
+<%
+var defaults = {
+    'bar': 'true',
+    'start': '0',
+    'type': 'percentage',
+    'title': ' '
+};
+
+for (var key in defaults) {
+    if (!data[key]) { data[key] = defaults[key]; }
+}
+
+var nb = ['progress'];
+var classes = ['nb-progress', '_init'];
+var attrs = {};
+
+classes.push('nb-progress_type_' + data.type);
+
+attrs['data-nb-progress'] = data.start;
+%><div <%=JST._attrs({source: data, nb: nb, classes: classes, attrs: attrs})%>><%
+
+    if (data.bar) {
+        %><div class="nb-progress__bar js-bar" style="width: <%-data.start%>%;"></div><%
+    }
+
+    if (data.title) {
+        %><div class="nb-progress__title js-title"><%
+            if (data.type == 'percentage') {
+                %><%-data.start%>%<%
+            } else {
+                %><%-(data.title)%><%
+            }
+        %></div><%
+    }
+%></div>

@@ -1,0 +1,34 @@
+<%
+var nb = ['checkbox'];
+var classes = ['nb-checkbox'];
+var attrs = {};
+
+if (!data.type) { data.type = 'checkbox'; }
+
+var input_id = JST._uniq({prefix: 'nb-checkbox_'});
+
+classes.push('nb-checkbox_size_' + (data.size || 'm'));
+classes.push('nb-checkbox_type_' + data.type);
+
+attrs['for'] = input_id;
+
+if (data.disabled) {
+    classes.push('nb-checkbox_disabled');
+    attrs.disabled = 'disabled';
+}
+
+if (data.checked) {
+    attrs.checked = 'checked';
+}
+
+%><label <%= JST._attrs({ source: data, nb: nb, classes: classes, attrs: attrs}) %>><%
+
+    %><input <%= JST._attrs({ classes: ['nb-checkbox__input'], attrs: {type: data.type, id: input_id}}) %> /><%
+
+    %><span class="nb-checkbox__flag nb-checkbox__flag_type_<%=data.type%>"><%
+        %><span class="nb-checkbox__flag__icon"></span><%
+    %></span><%
+
+    %><span class="nb-checkbox__label"><%=data.text%></span><%
+
+ %></label>

@@ -1,0 +1,42 @@
+<%
+var defaults = {
+    'leftText': 'On',
+    'rightText': 'Off',
+    'size': 's'
+}
+var nb = ['toggler'];
+var classes = ['nb-toggler', '_init'];
+var attrs = {};
+
+for (var key in defaults) {
+    if (!data[key]) { data[key] = defaults[key]; }
+}
+
+classes.push('nb-toggler_size_' + (data.size || 'm'));
+
+if (data.disabled) {
+    classes.push('nb-toggler_disabled');
+    attrs.disabled = 'disabled';
+}
+
+if (data.checked) {
+    classes.push('nb-toggler_checked');
+    attrs.checked = 'checked';
+}
+
+attrs['tabindex'] = '1';
+
+%><a <%=JST._attrs({source: data, nb: nb, classes: classes, attrs: attrs})%>><%
+        %><label class="nb-toggler__label"><%
+            %><input type="checkbox" class="nb-toggler__checkbox" <%=JST._attrs({attrs: attrs})%> /><%
+        %></label><%
+        %><div class="nb-toggler__container"><%
+            %><div class="nb-toggler__sticker nb-toggler__sticker_left"><%
+                %><span class="nb-toggler__text"><%-data.leftText%></span><%
+            %></div><%
+            %><div class="nb-toggler__sticker nb-toggler__sticker_right"><%
+                %><span class="nb-toggler__text"><%-data.rightText%></span><%
+            %></div><%
+        %></div><%
+        %><div class="nb-toggler__knob"></div><%
+    %></a>
