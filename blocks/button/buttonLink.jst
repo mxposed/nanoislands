@@ -1,0 +1,36 @@
+<%
+var nb = data.static ? [] : ['button'];
+var classes = [
+    'nb-button',
+    '_init',
+    'nb-button_type_link',
+    'nb-button_theme_' + (data.theme || 'normal'),
+    'nb-button_size_' + (data.size || 'm')
+];
+var attrs = {};
+
+if (data.disabled) {
+    classes.push('nb-button_disabled');
+    attrs.disabled = 'disabled';
+} else if (data.href) {
+    attrs.href = data.href;
+}
+
+if (data.checked) {
+    attrs.checked = 'checked';
+}
+
+if (!data.content && data.icon) {
+    classes.push('nb-button_only-icon');
+}
+
+%><a <%=JST._attrs({nb: nb, classes: classes, attrs: attrs})%>><%
+    %><span class="nb-button__text"><%
+        if (data.icon) {
+            print(JST.icon(data.icon));
+        }
+        if (data.content) {
+            %><%-data.content%><%
+        }
+    %></span><%
+%></a>
