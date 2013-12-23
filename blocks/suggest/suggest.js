@@ -1,4 +1,14 @@
-;(function() {
+/*
+* jQuery UI Depends:
+*        jquery.ui.autocomplete.js
+*        jquery.ui.button.js
+*        jquery.ui.core.js
+*        jquery.ui.widget.js
+*        jquery.ui.position.js
+*        jquery.ui.menu.js
+*/
+
+;(function () {
 
     /**
      * Саджест
@@ -22,11 +32,11 @@
      * Опции инициализации саджеста
      * @description
      *     Эти опции могут быть определены в yate шаблонах при описании наноблока.
-     *     Опции можно менять в рантайме через метод option
+     *     Опции можно менять в рантайме через событие setOption
      *
      * @example
      *     var sug = nb.find('#mysuggest');
-     *     sug.option('source', 'http://mydomain.com/user/search');
+     *     sug.setOption({ 'source','http://mydomain.com/user/search'});
      *
      * @type {Object}
      */
@@ -78,68 +88,26 @@
         minLength: 2
     }
 
-    /**
-     * Внешние методы саджеста
-     * @interface
-     * @type {Object}
-     */
-    var apiSuggest = {
-        /**
-         * Возвращает выбранный в саджесте элемент данных из истоника.
-         * @return {Object}
-         */
-        getItemSelected: function() {
-            return this.$input.data().uiSuggest.selectedItem;
-        },
-
-        /**
-         * Устанавливает опцию для виджета.
-         * По сути является аналогом jq.ui.option
-         * http://api.jqueryui.com/autocomplete/#method-option
-         *
-         * @param  {String} name  Имя опции
-         * @param  [value] Значение опции
-         */
-        option: function(name, value) {
-            var args = Array.prototype.slice.call(arguments);
-            args.unshift('option');
-            return this.$input.suggest.apply(this.$input, args);
-        },
-
-        /**
-         * Скрывает список предложений
-         * http://api.jqueryui.com/autocomplete/#method-close
-         */
-        close: function() {
-            return this.$input.suggest('close');
-        },
-
-        value: function() {
-            return this.$input.val();
-        }
-    }
-
-
 
     $.widget("ui.suggest", $.ui.autocomplete, {
         options: optionsSuggest,
 
-        _renderMenu: function( ul, items ) {
+        _renderMenu: function (ul, items) {
             var that = this;
             var html = '';
 
-            $.each( items, function(index, item) {
+            $.each(items, function (index, item) {
                 html += that._renderItem(item);
             });
 
             $(html).appendTo(ul);
 
-            ul.children('li').each(function(index) {
+            ul.children('li').each(function (index) {
                 $(this).data("ui-autocomplete-item", items[index]);
             });
         },
 
-        _renderItem: function(item) {
+        _renderItem: function (item) {
             var clone = $.extend({}, item);
 
             if (this.options.highlight) {
@@ -157,7 +125,7 @@
             }, 'nb-suggest');
         },
 
-        _suggest: function(items) {
+        _suggest: function (items) {
             this._super(items);
 
             if (this.options.countMax && !this._heightMax) {
@@ -170,7 +138,7 @@
             }
         },
 
-        search: function(value, event) {
+        search: function (value, event) {
             this._trigger('_search');
 
             return this._super(value, event);
@@ -178,39 +146,48 @@
     });
 
     var highlightings = {
-        'default': function(item, term) {
-            var matcher = new RegExp( '(' + $.ui.autocomplete.escapeRegex(term) + ')', "i" );
+        'default': function (item, term) {
+            var matcher = new RegExp('(' + $.ui.autocomplete.escapeRegex(term) + ')', "i");
             item.label = item.label.replace(matcher, '<b>$1</b>');
         },
 
-        'username': function(item, term) {
-            var matcher = new RegExp( '(' + $.ui.autocomplete.escapeRegex(term) + ')', "ig" );
+        'username': function (item, term) {
+            var matcher = new RegExp('(' + $.ui.autocomplete.escapeRegex(term) + ')', "ig");
             var matches = item.label.match(matcher);
 
-            item.usernameHighlighted = item.username.replace(matcher, '<b>$1</b>');
+            item.usernameHighlighted = item.username.replace(matcher, '<span class="nb-suggest__hl">$1</span>');
 
             if (typeof item.email == 'string') {
-                item.emailHighlighted = item.email.replace(matcher, '<b>$1</b>');
+                item.emailHighlighted = item.email.replace(matcher, '<span class="nb-suggest__hl">$1</span>');
             }
         }
     }
 
-    nb.define('suggest', $.extend({
+    nb.define('suggest', {
         events: {
-            'init': 'oninit'
+            'init': 'oninit',
+            'close': 'onClose',
+            'disable': 'onDisable',
+            'enable': 'onEnable'
         },
 
-        oninit: function() {
+        /**
+        * Init select
+        * @fires 'nb-suggest_inited'
+        */
+        oninit: function () {
             this.$node = $(this.node);
+
+            this.input = this.children()[0];
 
             var source = this.$node.data('source');
 
-            this.$node.find('input').on('keydown', function(e) {
+            this.$node.find('input').on('keydown', function (e) {
                 var keyCode = $.ui.keyCode;
 
                 if ($.inArray(e.keyCode, [ keyCode.ENTER, keyCode.NUMPAD_ENTER ]) !== -1) {
                     if (!this.$input.data().uiSuggest.menu.active) {
-                        this.trigger('nb-keypress-enter', this.value());
+                        this.trigger('nb-suggest_keypress-enter', this.getValue());
                     }
                 }
             }.bind(this));
@@ -228,16 +205,80 @@
 
             this.$suggest.addClass(this.$node.data('class-suggest'));
 
-            this.$input.on('suggest_search', function(e) {
-                this.trigger('nb-type', this.value());
+            this.$input.on('suggest_search', function (e) {
+                this.trigger('nb-suggest_type', this.getValue());
             }.bind(this));
 
-            this.$input.on('suggestselect', function(e, item) {
-                this.trigger('nb-select', item.item);
+            this.$input.on('suggestselect', function (e, item) {
+                this.trigger('nb-suggest_select', item.item);
             }.bind(this));
+
+            this.trigger('nb-suggest_inited');
+        },
+
+        /**
+         * Возвращает выбранный в саджесте элемент данных из истоника.
+         * @return {Object}
+         */
+        getSelected: function () {
+            return this.$input.data().uiSuggest.selectedItem;
+        },
+
+        /**
+         * Устанавливает опцию для виджета.
+         * По сути является аналогом jq.ui.option
+         * http://api.jqueryui.com/autocomplete/#method-option
+         * @param  {Object.<string, number>} option — {
+         *      name: value —  имя  и значение опцииопции
+         * }
+         */
+        setOption: function (option) {
+            var args = ['option', option]
+            return this.$input.suggest.apply(this.$input, args);
+        },
+
+        /**
+         * Скрывает список предложений
+         * http://api.jqueryui.com/autocomplete/#method-close
+         */
+        onClose: function () {
+            return this.$input.suggest('close');
+        },
+
+        /**
+         * Disable input
+         */
+        onDisable: function () {
+            console.log('Disable')
+            this.input.trigger('disable');
+        },
+
+        /**
+         * Enable input
+         */
+        onEnable: function () {
+            this.input.trigger('enable');
+        },
+
+        /**
+         * Get current value oj the suggest
+         * @returns {String | Number}
+         */
+        getValue: function () {
+            return this.$input.val();
+        },
+
+        /**
+         * Searcch value in the source array and open suggest popup
+         * @param  {string | number} value
+         */
+        search: function (value) {
+            this.$input.suggest( "search", value );
         }
-    }, apiSuggest));
+    });
 
 })();
+
+
 
 

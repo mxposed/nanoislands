@@ -1,3 +1,38 @@
+##### 0.1.25
+
+* [API: Checkbox] events, methods, docs
+* [API: Input] refactoring: events, methods, docs
+* [API: Select] refactoring: events, methods, docs
+* .mod attr with roundremoved
+
+##### 0.1.24
+
+* [API: Button] Skin for promo button — 'theme': 'promo'
+* 'make publish' for npm build in development
+
+##### 0.1.22
+
+* adds nb-select_changed event
+
+##### 0.1.21
+
+* Replaced menu-separators with s-i
+* Updates for the newest s-i
+* Using stylobate-islands skin for suggests
+* Using stylobate-islands skin for dropdowns
+* Using stylobate-islands skin for select
+* Fix for suggest width bug
+* [API: Button] Events and methods have been refactored
+* [API: Toggler] Events and methods have been refactored
+* [API: Select] Events and methods have been refactored
+* Add toggler's doc
+
+##### 0.1.20
+ * [API: Suggest] Events and methods have been refactored
+ * Disable/Enable events added to slider
+ * Position popup off its base positioning property
+ * Attrs.title added to file input
+
 ##### 0.1.19
  * Upload, attention icons
  * Droppable added in jQuery UI build

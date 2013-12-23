@@ -107,19 +107,16 @@ match .buttonAttach nb {
                     if .attrs.name {
                         @name = "{.attrs.name}"
                     }
+                    if .attrs.title {
+                        @title += "{.attrs.title}"
+                    }
                 </input>
                 <span class="nb-file-intruder__focus"></span>
             </span>
         </span>
         <span class="nb-button__text">
-            if (.content && .icon) {
                 apply .icon nb
                 html(.content)
-            } else if (!.content && .icon){
-                apply .icon nb
-            } else {
-                html(.content)
-            }
         </span>
     </label>
 }
