@@ -1,6 +1,7 @@
 nb.define('checkbox', {
     events: {
         'init': 'oninit',
+        'click': '_onclick'
     },
 
     /**
@@ -8,10 +9,10 @@ nb.define('checkbox', {
      * @fires 'nb-checkbox_inited' | 'nb-radio_inited'
      */
 
-    oninit: function () {
+    oninit: function() {
         this.$node = $(this.node);
         this.$control = this.$node.find('input[type]');
-        this.type = this.$node.find('input[type]').attr('type');
+        this.type = this.$control.attr('type');
         if (!this.isChecked()) {
             this.$control.prop('indeterminate', true);
         }
@@ -22,19 +23,21 @@ nb.define('checkbox', {
      * Return check state of the checkbox or radio
      * @returns {Boolean}
      */
-    isChecked: function () {
+    isChecked: function() {
         return this.$control.prop('checked');
     },
 
     /**
      * Checking checkbox or radio
      * @fires 'nb-checkbox_checked' | 'nb-radio_checked'
-     * @returns {nb.block}
+     * @returns {Object} nb.block
      */
-    check: function () {
+    check: function() {
         if (this.isEnabled()) {
-            this.$control.prop('indeterminate', false);
-            this.$control.attr('checked', true);
+            this.$control.prop({
+                'indeterminate': false,
+                'checked': true
+            });
             this.trigger('nb-' + this.type + '_checked');
         }
         return this;
@@ -43,31 +46,46 @@ nb.define('checkbox', {
     /**
      * Unchecking checkbox or radio
      * @fires 'nb-checkbox_unchecked' | 'nb-radio_unchecked'
-     * @returns {nb.block}
+     * @returns {Object} nb.block
      */
-    uncheck: function () {
+    uncheck: function() {
         if (this.isEnabled()) {
-            this.$control.prop('indeterminate', false);
-            this.$control.attr('checked', false);
+            this.$control.prop({
+                'indeterminate': false,
+                'checked': false
+            });
             this.trigger('nb-' + this.type + '_unchecked');
         }
         return this;
+    },
+
+    _onclick: function(e) {
+        // <label><input/></label> may fires event twice
+        // @see http://www.w3.org/TR/html5/forms.html#labeled-control
+        if (e.target.nodeName === 'INPUT') {
+            // fires block events
+            if (this.$control.prop('checked')) {
+                this.check();
+            } else {
+                this.uncheck();
+            }
+        }
     },
 
     /**
      * Return indeterminate state of the checkbox or radio
      * @returns {Boolean}
      */
-    isIndeterminate: function () {
+    isIndeterminate: function() {
         return this.$control.prop('indeterminate');
     },
 
     /**
      * Set indeterminate state of the checkbox or radio
      * @fires 'nb-checkbox_indeterminated' | 'nb-radio_indeterminated'
-     * @returns {nb.block}
+     * @returns {Object} nb.block
      */
-    setIndeterminate: function () {
+    setIndeterminate: function() {
         if (this.isEnabled()) {
             this.$control.prop('indeterminate', true);
             this.trigger('nb-' + this.type + '_indeterminated');
@@ -78,9 +96,9 @@ nb.define('checkbox', {
     /**
      * Set determinate state of the checkbox or radio
      * @fires 'nb-checkbox_determinated' | 'nb-radio_determinated'
-     * @returns {nb.block}
+     * @returns {Object} nb.block
      */
-    setDeterminate: function () {
+    setDeterminate: function() {
         if (this.isEnabled()) {
             this.$control.prop('indeterminate', false);
             this.trigger('nb-' + this.type + '_determinated');
@@ -92,18 +110,18 @@ nb.define('checkbox', {
      * Return enable state of the checkbox or radio
      * @returns {Boolean}
      */
-    isEnabled: function () {
+    isEnabled: function() {
         return !this.$control.prop('disabled');
     },
 
     /**
      * Enable the checkbox or radio
      * @fires 'nb-checkbox_enabled' | 'nb-radio_enabled'
-     * @returns {nb.block}
+     * @returns {Object} nb.block
      */
-    enable: function () {
+    enable: function() {
         if (!this.isEnabled()) {
-            this.$node.removeClass('nb-checkbox_disabled')
+            this.$node.removeClass('nb-checkbox_disabled');
             this.$control.removeAttr('disabled');
             this.trigger('nb-' + this.type + '_enabled');
         }
@@ -113,12 +131,12 @@ nb.define('checkbox', {
     /**
      * Disable the checkbox or radio
      * @fires 'nb-checkbox_disabled' | 'nb-radio_disabled'
-     * @returns {nb.block}
+     * @returns {Object} nb.block
      */
-    disable: function () {
+    disable: function() {
         if (this.isEnabled()) {
             this.blur();
-            this.$node.addClass('nb-checkbox_disabled')
+            this.$node.addClass('nb-checkbox_disabled');
             this.$control.attr('disabled', 'disabled');
             this.trigger('nb-' + this.type + '_disabled');
         }
@@ -128,9 +146,9 @@ nb.define('checkbox', {
     /**
      * Focus the checkbox or radio
      * @fires 'nb-checkbox_focused' | 'nb-radio_focused'
-     * @returns {nb.block}
+     * @returns {Object} nb.block
      */
-    focus: function () {
+    focus: function() {
         this.$control.focus();
         this.trigger('nb-' + this.type + '_focused');
         return this;
@@ -139,9 +157,9 @@ nb.define('checkbox', {
     /**
      * Blur the checkbox or radio
      * @fires 'nb-checkbox_blured' | 'nb-radio_blured'
-     * @returns {nb.block}
+     * @returns {Object} nb.block
      */
-    blur: function () {
+    blur: function() {
         this.$control.blur();
         this.trigger('nb-' + this.type + '_blured');
         return this;
@@ -150,12 +168,12 @@ nb.define('checkbox', {
     /**
      * Sets label of the checkbox or radio
      * @param {String|Number} label
-     * @fires 'nb-checkbox_label-setted' | 'nb-radio_label-setted'
-     * @returns {nb.block}
+     * @fires 'nb-checkbox_label-set' | 'nb-radio_label-set'
+     * @returns {Object} nb.block
      */
-    setLabel: function (label) {
+    setLabel: function(label) {
         this.$node.find('.nb-checkbox__label').html(label);
-        this.trigger('nb-' + this.type + '_label-setted');
+        this.trigger('nb-' + this.type + '_label-set');
         return this;
     },
 
@@ -163,7 +181,7 @@ nb.define('checkbox', {
      * Gets label of the checkbox or radio
      * @returns {String | Number}
      */
-    getLabel: function () {
+    getLabel: function() {
         return this.$node.find('.nb-checkbox__label').html();
     },
 
@@ -171,8 +189,40 @@ nb.define('checkbox', {
      * Get name of the checkbox or radio
      * @returns {String|Object} name
      */
-    getName: function () {
+    getName: function() {
         return this.$control.prop('name');
+    },
+
+    /**
+     * Set checkbox value
+     * @param {String|Number} value
+     * @fires 'nb-checkbox_name-set' | 'nb-radio_name-set'
+     * @returns {Object} nb.block
+     */
+    setName: function(value) {
+        this.$control.attr('name', value);
+        this.trigger('nb-' + this.type + '_name-set');
+        return this;
+    },
+
+    /**
+     * Returns checkbox value
+     * @returns {String}
+     */
+    getValue: function() {
+        return this.$control.attr('value');
+    },
+
+    /**
+     * Set checkbox value
+     * @param {String|Number} value
+     * @fires 'nb-checkbox_value-set' | 'nb-radio_value-set'
+     * @returns {Object} nb.block
+     */
+    setValue: function(value) {
+        this.$control.attr('value', value);
+        this.trigger('nb-' + this.type + '_value-set');
+        return this;
     }
 
 });

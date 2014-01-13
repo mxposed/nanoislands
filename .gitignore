@@ -12,3 +12,4 @@ nanoislands.yate.js
 demo/demo.yate.js
 demo/blocks.jst.js
 demo/demo.jst.js
+unittests/tests.yate.js
