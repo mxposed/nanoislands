@@ -49,6 +49,7 @@
         "nanoislands.ie.css",
         "externals.yate.js",
         "build",
+        "unittests",
         "Makefile"
     ],
     "scripts": {
