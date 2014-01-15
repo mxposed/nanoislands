@@ -26,7 +26,7 @@ if (!data.content && data.icon) {
     classes.push('nb-button_only-icon');
 }
 
-%><label <%= JST._attrs({ nb: nb, classes: classes, attrs: {'for': data.id}}) %>><%
+%><label <%= JST._attrs({ source: data, nb: nb, classes: classes, attrs: {'for': data.id}}) %>><%
     %><span class="nb-file-intruder"><%
         %><span class="nb-file-intruder__inner"><%
             var input_attrs = {};
