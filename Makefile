@@ -5,7 +5,8 @@ export NPM
 
 MAKEFLAGS+=-j 4
 
-all: node_modules demo/demo.yate.js demo/demo.jst.js nanoislands.css nanoislands.ie.css nanoislands.js unittests/tests.yate.js
+#all: node_modules demo/demo.yate.js demo/demo.jst.js nanoislands.css nanoislands.ie.css nanoislands.js unittests/tests.yate.js
+all: node_modules demo/demo.yate.js nanoislands.css nanoislands.ie.css nanoislands.js unittests/tests.yate.js
 
 nanoislands.css: $(shell find . -name '*.styl') node_modules
 	node build/build-styl.js > $@
