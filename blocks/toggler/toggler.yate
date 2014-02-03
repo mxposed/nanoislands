@@ -14,10 +14,10 @@ match .toggler nb {
     <a tabindex="1" class="nb-toggler nb-toggler_size_{.size} _init" data-nb="toggler">
         apply . nb-main-attrs
         if .checked {
-            @class += ' nb-toggler_checked'
+            @class += ' is-checked'
         }
         if .disabled {
-            @class += ' nb-toggler_disabled'
+            @class += ' is-disabled'
         }
         <label class="nb-toggler__label">
             <input type="checkbox" class="nb-toggler__checkbox" >

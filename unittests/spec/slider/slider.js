@@ -1,5 +1,9 @@
 describe('Slider Tests', function() {
     beforeEach(function() {
+        var result = yr.run('main', {slider: true});
+        $('.content').html(result);
+
+        nb.init();
         this.slider = nb.find('slider');
         this.sliderDisabled = nb.find('slider-disabled');
     });
@@ -18,7 +22,48 @@ describe('Slider Tests', function() {
 
             expect(input.value).to.be.equal('25');
         });
+
+        it('should fire event nb-slider_slide', function() {
+            var checked = false;
+            this.slider.on('nb-slider_slide', function() {
+                checked = true;
+            });
+
+            this.slider.$body.data('uiSlider')._trigger('slide');
+
+            expect(checked).to.be.ok();
+        });
+
+        it('should fire event nb-slider_slidestop', function() {
+            var checked = false;
+            this.slider.on('nb-slider_slidestop', function() {
+                checked = true;
+            });
+
+            this.slider.$body.data('uiSlider')._trigger('stop');
+
+            expect(checked).to.be.ok();
+        });
+
+        it('should fire event nb-slider_slidestart', function() {
+            var checked = false;
+
+            this.slider.on('nb-slider_slidestart', function() {
+                checked = true;
+            });
+
+            this.slider.$body.data('uiSlider')._trigger('start');
+
+            expect(checked).to.be.ok();
+        });
     });
+
+    describe('#getType()', function() {
+        it('should return slider type', function() {
+            expect(this.slider.getType()).to.be.equal('slider');
+        });
+    });
+
 
     describe('#setValue()', function() {
         it('should change the value', function() {
@@ -28,9 +73,9 @@ describe('Slider Tests', function() {
             expect(input.value).to.be.equal('30');
         });
 
-        it('should throws nb-slider_value-set event', function() {
+        it('should throws nb-value-set event', function() {
             var checked = false;
-            this.slider.on('nb-slider_value-set', function() {
+            this.slider.on('nb-value-set', function() {
                 checked = true;
             });
 
@@ -54,9 +99,9 @@ describe('Slider Tests', function() {
             expect(input.name).to.be.equal('price');
         });
 
-        it('should throws nb-slider_name-set event', function() {
+        it('should throws nb-name-set event', function() {
             var checked = false;
-            this.slider.on('nb-slider_name-set', function() {
+            this.slider.on('nb-name-set', function() {
                 checked = true;
             });
 
@@ -78,17 +123,17 @@ describe('Slider Tests', function() {
 
     describe('#disable()', function() {
         it('should set disable state', function() {
-            var $conrol = this.slider.$node.find('.nb-slider__body');
+            var $control = this.slider.$node.find('.nb-slider__body');
 
             this.slider.disable();
 
-            expect($conrol.slider('option', 'disabled')).to.be.ok();
+            expect($control.slider('option', 'disabled')).to.be.ok();
         });
 
         it('should has disabled mod', function() {
             this.slider.disable();
 
-            expect(this.slider.$node.hasClass('nb-slider_disabled')).to.be.ok();
+            expect(this.slider.$node.hasClass('is-disabled')).to.be.ok();
         });
     });
 
@@ -104,7 +149,7 @@ describe('Slider Tests', function() {
         it('should not has disabled mod', function() {
             this.sliderDisabled.enable();
 
-            expect(this.slider.$node.hasClass('nb-slider_disabled')).not.to.be.ok();
+            expect(this.slider.$node.hasClass('nb-disabled')).not.to.be.ok();
         });
     });
 
@@ -122,12 +167,10 @@ describe('Slider Tests', function() {
 
         beforeEach(function() {
             sinon.spy($.fn, 'slider');
-            sinon.spy(nb, 'destroy');
         });
 
         afterEach(function() {
             $.fn.slider.restore();
-            nb.destroy.restore();
         });
 
         it("should call $.fn.slider('destroy')", function() {
@@ -135,9 +178,9 @@ describe('Slider Tests', function() {
             expect($.fn.slider.calledWithExactly('destroy')).to.be.equal(true);
         });
 
-        it("should call nb.destroy('slider')", function() {
+        it("should destroy nb.block", function() {
             this.slider.destroy();
-            expect(nb.destroy.calledWithExactly('slider')).to.be.equal(true);
+            expect(nb.hasBlock($('#slider')[0])).to.be.equal(false);
         });
     });
 

@@ -8,11 +8,11 @@ nb.define('tooltip-jq-toggler', {
     },
 
     'onmouseenter': function() {
-        if (this.getMod('_disabled')) {
+        if (this.$node.hasClass('is-disabled')) {
             return true;
         }
 
-        var data = this.data()[this.name];
+        var data = this.nbdata()[this.name];
 
         var params = {
             content: data.content,
@@ -24,8 +24,8 @@ nb.define('tooltip-jq-toggler', {
             params.position = data.position;
         }
 
-        $(this.node).tooltip(params);
-        $(this.node).tooltip("open");
+        this.$node.tooltip(params);
+        this.$node.tooltip("open");
     }
 
-});
+}, 'base');

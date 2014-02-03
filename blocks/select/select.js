@@ -10,31 +10,25 @@
 
 nb.define('select', {
     events: {
-        'init': 'onInit'
+        'click': '_onclick'
         //'open' { event, ui}
         //'close' { event, ui}
     },
 
     /**
      * Init select
-     * @fires 'nb-select_inited'
+     * @fires 'nb-inited'
      */
-
-    onInit: function() {
-        nb.init(this);
-        this.$node = $(this.node);
+    oninit: function() {
         this.$control = this.$node.find('select');
         this.$dropdown = this.$node.children('.nb-select__dropdown').appendTo('body');
-        this.data = this.data();
-
-        // find elements and values
-        this.button = this.children()[0];
+        this.data = this.nbdata();
 
         this._updateFromSelect();
 
         // preparing control depending on configuration and content
         this.controlPrepare();
-        this.trigger('nb-select_inited');
+        this.trigger('nb-inited', this);
     },
 
     /**
@@ -67,23 +61,51 @@ nb.define('select', {
             position: position,
             appendTo: that.$dropdown,
             source: function(request, response) {
-                response(that.$fallback.children('option').map(function() {
-                    return {
-                        label: $(this).text(),
-                        value: $(this).val(),
-                        option: this
-                    };
+                response(that.$control.children(['option', 'optgroup']).map(function() {
+                    var returnObj;
+                    var $this = $(this);
+
+                    if (this.tagName == 'OPTGROUP') {
+                        returnObj = {
+                            type: 'group',
+                            label: $this.attr('label'),
+                            option: this,
+                            group: $this.children('option').map(function() {
+                                return {
+                                    label: $(this).text(),
+                                    value: $(this).val(),
+                                    option: this
+                                };
+                            })
+                        };
+                    } else {
+                        var icon = $this.data('icon');
+                        returnObj = {
+                            label: $this.text(),
+                            value: $this.val(),
+                            option: this
+                        };
+
+                        if (icon) {
+                            returnObj['icon'] = icon;
+                        }
+                    }
+
+                    return returnObj;
                 }));
             },
             select: function(event, ui) {
-                ui.item.option.selected = true;
 
-                that.$jUI._trigger('selected', event, {
-                    item: ui.item.option
-                });
+                if (ui.item.type != 'group') {
+                    ui.item.option.selected = true;
+
+                    that.$jUI._trigger('selected', event, {
+                        item: ui.item.option
+                    });
+                }
             },
             // delegate handler on 'outer' click on open
-            open: function(event, ui) {
+            open: function() {
                 that.$jUI._on(that.$jUI.document, {
                     // on 'outer' mousedown close control
                     mousedown: function(e) {
@@ -92,22 +114,17 @@ nb.define('select', {
                         }
                     }
                 });
-                that.trigger('open', {
-                    event: event,
-                    ui: ui
-                });
+                that.trigger('nb-opened', that);
             },
 
-            close: function(event, ui) {
+            close: function() {
                 that.$jUI._off(that.$jUI.document, 'mousedown');
-                that.trigger('close', {
-                    event: event,
-                    ui: ui
-                });
+                that.trigger('nb-closed', that);
             }
         }).addClass('ui-widget ui-widget-content');
 
         that.$jUI = that.$node.data('uiAutocomplete');
+
 
         // redefine one menu item rendering method, fires every time, then popup opening
         that.$jUI._renderItem = function(ul, item) {
@@ -117,9 +134,28 @@ nb.define('select', {
                 $itemNode.addClass('nb-select__item_selected_yes');
             }
 
+            if (item.type == 'group') {
+
+                $itemNode.addClass('nb-select__item_type_group');
+                var $innerUL = $('<ul></ul>');
+
+                item.group.each(function(index, item) {
+                    that.$jUI._renderItem($innerUL, item);
+                });
+
+                $itemNode.append($innerUL);
+            }
+
             $itemNode.data('ui-autocomplete-item', item);
-            $itemNode.append('<a><span class="nb-select__text">' + item.label + '</span></a>');
-            $itemNode.appendTo(ul);
+
+            var $itemNodeContent = $('<a></a>');
+            var $itemText = $('<span class="nb-select__text"></span>').html(item.label).appendTo($itemNodeContent);
+            if (item.icon) {
+                $itemText.prepend('<img src="//yandex.st/lego/_/La6qi18Z8LwgnZdsAr1qy1GwCwo.gif" class="nb-icon nb-icon_' + item.icon + '">');
+            }
+            $itemNode
+                .append($itemNodeContent)
+                .appendTo(ul);
 
             return $itemNode;
         };
@@ -127,8 +163,9 @@ nb.define('select', {
         // redefine valueMethod, extend with button text changing and fallback select value changing
         // if value not provided, return current value of fallback select
         that.$jUI.valueMethod = function(value) {
+
             if (typeof value === 'string') {
-                var text = that.$fallback.children('[value="' + value + '"]').text();
+                var text = that.$control.find('option[value="' + value + '"]').text();
                 that.setState({
                     value: value,
                     text: text
@@ -136,19 +173,8 @@ nb.define('select', {
             }
             return that.$selected.val();
         };
-
-        // add click event for button
-        $(this.button.node).on('click', function(evt) {
-            // иначе сабмитит форму при клике
-            evt.preventDefault();
-            // close if already visible
-            if (that.$node.autocomplete('widget').css('display') == 'block') {
-                that.$node.autocomplete('close');
-                return;
-            }
-            // pass empty string as value to search for, displaying all results
-            that.$node.autocomplete('search', '');
-            that.$node.focus();
+        that.$jUI.menu.element.on('click', function(evt) {
+            evt.stopPropagation();
         });
     },
 
@@ -164,7 +190,78 @@ nb.define('select', {
         // &nbsp; - to prevent button from collapse if no text on <option/>
         this.text = this.$selected.text() || '&nbsp;';
 
-        this.button.setText(this.text);
+        this._setText(this.text);
+    },
+
+    _onclick: function(evt) {
+        if (this.$node && this.$node.data('uiAutocomplete')) {
+            evt.preventDefault();
+            // close if already visible
+            if (this.$node.data('uiAutocomplete') && this.$node.autocomplete('widget').css('display') == 'block') {
+                this.close();
+                return;
+            }
+            this.open();
+            this.$node.focus();
+        }
+    },
+
+    _setText: function(text) {
+        this.$node.find('.nb-button__text').html(text);
+    },
+
+    _setMaxHeight: function(maxheight) {
+        var height;
+        if (/^\d+$/.test(maxheight)) {
+            var item = this.$jUI.menu.element.find('.nb-select__item').first();
+            height = parseInt(item.height()) * maxheight;
+        } else {
+            height = maxheight;
+        }
+
+        this.$jUI.menu.element.css({"max-height": height, "overflow-y": "scroll"});
+    },
+
+    /**
+     * Render dropdown of the select
+     * @fires 'nb-rendered'
+     * @returns {Object} nb.block
+     */
+    render: function() {
+        // pass empty string as value to search for, displaying all results
+        this.$node.autocomplete('search', '');
+
+        if (this.data.maxheight) {
+            this._setMaxHeight(this.data.maxheight);
+        }
+
+        this.trigger('nb-rendered', this);
+        return this;
+    },
+
+    /**
+     * Open dropdown of the select
+     * @fires 'nb-opened'
+     * @returns {Object} nb.block
+     */
+    open: function() {
+        if (this.$node && this.$node.data('uiAutocomplete')) {
+            this.render();
+        }
+        return this;
+    },
+
+    /**
+     * Close dropdown of the select
+     * @fires 'nb-closed'
+     * @returns {Object} nb.block
+     */
+    close: function() {
+        if (this.$node && this.$node.data('uiAutocomplete')) {
+            this.$node.autocomplete('close');
+            this.trigger('nb-closed', this);
+        }
+        return this;
     },
 
     /**
@@ -173,34 +270,39 @@ nb.define('select', {
          *     text: '..'
          *     value: '..'
          * }
-     * @fires 'nb-select_changed'
+     * @fires 'nb-changed'
+     * @returns {Object} nb.block
      */
     setState: function(params) {
         params = params || {};
-        var selected;
-        if (params.value) {
-            selected = this.$control.children('option[value="' + params.value + '"]');
-        } else {
-            selected = this.$control.children('option:contains(' + params.text + ')');
-        }
 
-        if (selected.length !== 0) {
-            this.$selected.prop('selected', false);
+        if (this.value !== params.value) {
+            var selected;
 
-            this.$selected = selected;
+            if (params.value) {
+                selected = this.$control.find('option[value="' + params.value + '"]');
+            } else {
+                selected = this.$control.find('option:contains(' + params.text + ')');
+            }
 
-            this.$selected.prop('selected', true);
+            if (selected.length !== 0) {
+                this.$selected.prop('selected', false);
 
-            this.value = this.$selected.val();
+                this.$selected = selected;
 
-            this.text = this.$selected.html();
+                this.$selected.prop('selected', true);
 
-            this.button.setText(this.text);
+                this.value = this.$selected.val();
 
-            this.trigger('nb-select_changed');
+                this.text = this.$selected.html();
 
-            this.$control.val(params.value);
+                this._setText(this.text);
 
+                this.trigger('nb-changed', this);
+
+                this.$control.val(params.value);
+
+            }
         }
         return this;
     },
@@ -232,37 +334,41 @@ nb.define('select', {
     /**
      * Changes a value of control, text on the button and select value it the fallback
      * @param {string} name
-     * @fires 'nb-select_name-set'
+     * @fires 'nb-name-set'
      * @returns {Object} nb.block
      */
     setName: function(name) {
         this.$control.prop('name', name);
-        this.trigger('nb-select_name-set');
+        this.trigger('nb-name-set', this);
         return this;
     },
 
     /**
      * Disables the select
-     * @fires 'nb-select_disabled'
+     * @fires 'nb-disabled'
      * @returns {Object} nb.block
      */
     disable: function() {
         if (this.isEnabled()) {
-            this.button.disable();
-            this.trigger('nb-select_disabled');
+            this.$node
+                .addClass('is-disabled')
+                .autocomplete('disable');
+            this.trigger('nb-disabled', this);
         }
         return this;
     },
 
     /**
      * Enables the select
-     * @fires 'nb-select_enabled'
+     * @fires 'nb-enabled'
      * @returns {Object} nb.block
      */
     enable: function() {
         if (!this.isEnabled()) {
-            this.button.enable();
-            this.trigger('nb-select_enabled');
+            this.$node
+                .removeClass('is-disabled')
+                .autocomplete('enable');
+            this.trigger('nb-enabled', this);
         }
         return this;
     },
@@ -272,13 +378,13 @@ nb.define('select', {
      * @returns {Boolean}
      */
     isEnabled: function() {
-        return this.button.isEnabled();
+        return !this.$node.hasClass('is-disabled');
     },
 
     /*
      * Set new items for select
      * @params {Array} source New source
-     * @fires 'nb-select_source-changed'
+     * @fires 'nb-source-changed'
      * @returns {Object} nb.block
      */
     setSource: function(source) {
@@ -307,7 +413,7 @@ nb.define('select', {
         this.$control.empty().append(html);
 
         this._updateFromSelect();
-        this.trigger('nb-select_source-set');
+        this.trigger('nb-source-changed', this);
         return this;
     },
 
@@ -328,7 +434,7 @@ nb.define('select', {
      * Add items to select
      * @param {Array|Object} items
      * @param {Number} index to insert
-     * @fires 'nb-select_source-changed'
+     * @fires 'nb-source-changed'
      * @returns {Object} nb.block
      */
     addToSource: function(items, index) {
@@ -351,14 +457,14 @@ nb.define('select', {
         }, this);
 
         this.setSource(source);
-        this.trigger('nb-select_source-changed');
+        this.trigger('nb-source-changed', this);
         return this;
     },
 
     /*
      * Remove items to select
      * @param {Array|Object|number} items or index
-     * @fires 'nb-select_source-changed'
+     * @fires 'nb-source-changed'
      * @returns {Object} nb.block
      */
     removeFromSource: function(param) {
@@ -382,49 +488,46 @@ nb.define('select', {
         }
 
         this.setSource(source);
-        this.trigger('nb-select_source-changed');
+        this.trigger('nb-source-changed', this);
         return this;
     },
 
     /**
      * Focus the select
-     * @fires 'nb-select_focused'
+     * @fires 'nb-focused'
      * @returns {Object} nb.block
      */
     focus: function() {
         if (this.isEnabled()) {
-            this.button.focus();
+            this.$node.focus();
         }
-        this.trigger('nb-select_focused');
+        this.trigger('nb-focused', this);
         return this;
     },
 
     /**
      * Blur the select
-     * @fires 'nb-select_blured'
+     * @fires 'nb-blured'
      * @returns {Object} nb.block
      */
     blur: function() {
         if (this.isEnabled()) {
-            this.button.blur();
+            this.$node.blur();
         }
-        this.trigger('nb-select_blured');
+        this.trigger('nb-blured', this);
         return this;
     },
 
     /**
      * Destroy the select
-     * @fires 'nb-select_destroyed'
+     * @fires 'nb-destroyed'
      */
     destroy: function() {
         if (this.$node && this.$node.data('uiAutocomplete')) {
-            this.button.destroy();
-            $(this.button.node).off('click');
             this.$node.autocomplete('destroy');
-            this.$dropdown.remove();
+            this.$dropdown.empty().appendTo(this.$node);
         }
-
-        this.trigger('nb-select_destroyed');
-        nb.destroy(this.node.getAttribute('id'));
+        this.trigger('nb-destroyed', this);
+        this.nbdestroy();
     }
-});
+}, 'base');

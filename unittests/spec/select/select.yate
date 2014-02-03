@@ -1,0 +1,100 @@
+match .select {
+      nb-select({
+            "disabled": true()
+            "id": "select-disabled"
+            "items": []
+        })
+
+        nb-select( {
+          'size': 'm'
+          'id': 'select'
+          'attrs': {
+            'name': 'myname'
+          }
+          'class': 'my-test-class'
+          'items': [
+              {
+                  'text': 'Карта'
+                  'value': 'option1'
+                  'selected': true()
+              }
+              {
+                  'text': 'Гибрид'
+                  'value': 'option3'
+              }
+          ]
+        })
+
+         nb-select( {
+              'size': 'm'
+              'id': 'select-mw1'
+              'maxHeight': 1
+              'class': 'my-test-class'
+              'items': [
+                  {
+                      'text': 'Карта'
+                      'value': 'option1'
+                      'selected': true()
+                  }
+                  {
+                      'text': 'Гибрид'
+                      'value': 'option3'
+                  }
+              ]
+            })
+
+            nb-select( {
+              'size': 'm'
+              'id': 'select-mw2'
+              'maxHeight': '10px'
+              'items': [
+                  {
+                      'text': 'Карта'
+                      'value': 'option1'
+                      'selected': true()
+                  }
+                  {
+                      'text': 'Гибрид'
+                      'value': 'option3'
+                  }
+              ]
+            })
+
+    nb-select({
+        'id': 'select-with-icons-in-options'
+        'items': [
+            {
+                'icon': 'close'
+                'text': 'Входящие'
+                'value': 'option0'
+                'selected': 'true'
+            }
+            {
+                'text': 'Социальные сети'
+                'value': 'option1'
+            }
+        ]
+    })
+    nb-select( {
+      'id': 'select-group'
+      'items': [
+          {
+              'text': 'opt'
+              'value': 'option1'
+          }
+          {
+              'text': 'group'
+              'group': [
+                    {
+                        'text': 'opt1'
+                        'value': 'val4'
+                    }
+                    {
+                        'text': 'opt2'
+                        'value': 'val5'
+                    }
+              ]
+          }
+      ]
+    })
+}

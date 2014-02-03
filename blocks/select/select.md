@@ -15,11 +15,14 @@
 * `'direction'` {string} bottom / top — open default direction
 * `'class'` {array} `['my_class1', 'my_class2']`
 * `'disabled'` {boolean}
+* `'maxHeight'` {Number|String} number of visible items or string value of the max-height like '10em'
 * `'within'` {string} '...' - id attr of the container where listing tries to fit in (window default)
 * `'items'` {array}  - each object in array could have text, value and selected fields
-    * `'text'` {string} 'Карта'
-    * `'value'` {string} 'option1'
+    * `'text'` {string} text of option
+    * `'value'` {string} value of option
+    * `'icon'` {string} 'three-dots'
     * `'selected'` {boolean}
+    * `'group'` {array} - group of options, array of items in `optgroup`
 
 #### Example
 
@@ -46,6 +49,27 @@ nb-select( {
           'text': 'Гибрид'
           'value': 'option3'
       }
+      {
+          'text': 'Ещё'
+          'value': 'option4'
+          'icon': 'three-dots'
+      }
+        'text': 'Группа'
+        'group': [
+              {
+                  'text': 'Супер Карта'
+                  'value': 'option4'
+              }
+              {
+                  'text': 'Супер Спутник'
+                  'value': 'option5'
+              }
+              {
+                  'text': 'Супер Гибрид'
+                  'value': 'option6'
+              }
+        ]
+    }
   ]
 })
 ```
@@ -58,6 +82,26 @@ nb-select( {
 
 var select = nb.block(node);
 
+ /**
+ * Render dropdown of the select
+ * @fires 'nb-rendered'
+ * @returns {Object} nb.block
+ */
+select.render();
+
+/**
+ * Open dropdown of the select
+ * @fires 'nb-opened'
+ * @returns {Object} nb.block
+ */
+select.open();
+
+/**
+ * Close dropdown of the select
+ * @fires 'nb-closed'
+ * @returns {Object} nb.block
+ */
+select.close();
 /**
  * Changes a value of control, text on the button and select value it the fallback
  *
@@ -66,7 +110,7 @@ var select = nb.block(node);
      *     text: '..'
      *     value: '..'
      * }
- * @fires 'nb-select_changed'
+ * @fires 'nb-changed' event with param {value, text}
  */
 select.setState({
     text: 'Hello, world!',
@@ -93,7 +137,7 @@ select.getName();
 /**
  * Changes a value of control, text on the button and select value it the fallback
  * @param {string} name
- * @fires 'nb-select_name-set'
+ * @fires 'nb-name-set'
  * @returns {Object} nb.block
  */
 select.setName('Vadim');
@@ -101,7 +145,7 @@ select.setName('Vadim');
 /**
  * Set new items for select
  * @params {Array|Object} source New source
- * @fires 'nb-select_source-changed'
+ * @fires 'nb-source-changed'
  * @returns {Object} nb.block
  */
 select.setSource([{value: 'val', text: 'text'}])
@@ -116,7 +160,7 @@ select.getSource();
  * Add items to select
  * @param {Array|Object} items
  * @param {Number} index to insert
- * @fires 'nb-select_source-changed'
+ * @fires 'nb-source-changed'
  * @returns {Object} nb.block
  */
 select.addToSource([{value: 'val', text: 'text'}]);
@@ -124,21 +168,21 @@ select.addToSource([{value: 'val', text: 'text'}]);
 /**
  * Remove items to select
  * @param {Array|Object|number} items or index
- * @fires 'nb-select_source-changed'
+ * @fires 'nb-source-changed'
  * @returns {Object} nb.block
  */
 select.removeFromSource();
 
 /**
  * Disables the select
- * @fires 'nb-select_disabled'
+ * @fires 'nb-disabled'
  * @returns {Object} nb.block
  */
 select.disable()
 
 /**
  * Enables the select
- * @fires 'nb-select_enabled'
+ * @fires 'nb-enabled'
  * @returns {Object} nb.block
  */
 select.enable();
@@ -151,14 +195,14 @@ select.isEnabled()
 
 /**
  * Focus the select
- * @fires 'nb-select_focused'
+ * @fires 'nb-focused'
  * @returns {Object} nb.block
  */
 select.focus()
 
 /**
  * Blur the select
- * @fires 'nb-select_blured'
+ * @fires 'nb-blured'
  * @returns {Object} nb.block
  */
 select.blur()
@@ -168,8 +212,5 @@ select.blur()
  * @fires 'nb-select_destroyed'
  */
 select.destroy()
-
-
-
 
 ```

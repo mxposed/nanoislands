@@ -1,5 +1,9 @@
 describe('Progress Tests', function() {
     beforeEach(function() {
+        var result = yr.run('main', {progress: true});
+        $('.content').html(result);
+
+        nb.init();
         this.nbProgress = nb.find('progress');
     });
     afterEach(function() {
@@ -20,9 +24,9 @@ describe('Progress Tests', function() {
             expect(control.$bar.attr('style').replace(/\s/g, '')).to.equal("width:10%;");
         });
 
-        it('should throws nb-progress_value-set event', function() {
+        it('should throws nb-value-set event', function() {
             var checked = false;
-            this.nbProgress.on('nb-progress_value-set', function() {
+            this.nbProgress.on('nb-value-set', function() {
                 checked = true;
             });
 
@@ -57,4 +61,11 @@ describe('Progress Tests', function() {
             expect(checked).to.ok();
         });
     });
+
+    describe('#destroy()', function() {
+        it("should destroy nb.block", function() {
+            this.progress.destroy();
+            expect(nb.hasBlock($('#progress')[0])).to.be.equal(false);
+        });
+    })
 });

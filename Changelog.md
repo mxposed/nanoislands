@@ -1,3 +1,105 @@
+##### 0.2.0
+* **unify jquery-ui files' name**
+    * /libs/jquery-ui/jquery-ui.custom.css
+    * /libs/jquery-ui/jquery-ui.custom.js
+
+###### Fixes
+* #175 — Popup doesn't hide when click out of the toggler for the second time
+* #178 — Размер опций селекта с темой `pseudo` должен соответствовать настройке селекта `size`
+
+###### API changes
+*  [Popup]
+  * New JS API methods
+
+##### 0.1.35
+
+###### Fixes
+* #171 — Select: Неправильный id у ноды select
+* #172 — При вызове enable/disable селекта, мы должны вызывать enable/disable jUI-автокомплита
+
+###### API changes
+*  [Select]
+  * Select options group
+  * Селект с иконками в опциях
+
+##### 0.1.34
+* stylobate "0.22.x"
+
+##### 0.1.33
+
+* stylobate "0.21.x"
+* stylobate-islands "0.21.x"
+* stylus "0.42.x"
+* **All event has been renamed for unification.** Check documentation.
+
+###### Fixes
+* fix #133 — Возможность вывода ошибки.
+* fix #161 — Для nb-button с иконкой надо иметь возможность задать иконку как текст
+* fix #160 — Унификация событий
+* Toggler focus/blur fixes
+* checkbox.getValue() should return empty string for inpt without value
+
+###### API changes
+* !!All event was renamed for unification!! Check documentation
+* #163 Событие change в блок input
+
+##### 0.1.32
+
+* update jQuery UI to v1.10.4
+* getType() method in all controls
+
+###### Fixes
+* fix #85 — Нужна возможность добавить scroll для списка элементов в select-е
+* fix #87 — Autofocus for first menu item in popup-menu
+* fix #152 — Выбор пункта в select'e генерирует клик на выпадушке
+* fix #150 — Restored the broken width for the wide selects
+* fix #151 — z-index for close button in modal popup
+* fix #148 — How do I determine block type?
+
+###### API changes
+* [Checkbox]
+  * tabindex param
+  * value param
+  * toggle() method
+* [Select]
+  * maxHeight param
+
+##### 0.1.31
+
+###### Fixes
+* fix #136 — We need to add method of the nb-select for updating position of the select's dropdown.
+* fix #142 — Select does not aligns with text baseline
+* fix #141 —  Fixed the size of the dropdowns for small selects and pseudo-selects
+* fix #139 — jQuery UI slider's events in nb-slider
+
+###### API changes
+* [Select]
+  * added open()
+  * added close()
+  * added render()
+* [Slider]
+  *  jQuery UI slider's events
+
+
+##### 0.1.30
+###### Fixes
+* fix #132
+* fix #128
+* fix #127
+* fix #130
+* fix #131
+* Select's dropdown z-index bug fixed
+
+###### API changes
+* [Select]
+  * setName()
+  * `nb-select_source-changed` event renamed to `nb-select_source-set`
+* [Progress] JS API
+* [Slider] `nb-slider_changed` event renamed to `nb-slider_value-set`
+* [Input]
+  * type multiline
+  * ghost mode
+
 ##### 0.1.29
 ###### Fixes
 * Change container of the select's dropdown.

@@ -1,10 +1,15 @@
 describe("Button Tests", function() {
     beforeEach(function() {
+        var result = yr.run('main', {button: true});
+        $('.content').html(result);
+
+        nb.init();
+
         this.button = nb.find('button');
     });
 
     afterEach(function() {
-        delete this.button;
+        this.button.destroy();
     });
 
     describe("Init", function() {
@@ -17,6 +22,15 @@ describe("Button Tests", function() {
             expect(button.isEnabled()).to.be.equal(false);
         });
     });
+
+
+    describe("YATE API", function() {
+        it('iconText', function() {
+            var button = nb.find('button-icon-text');
+            expect(button.$node.find('.nb-button__text .nb-icon').html()).to.be.equal('▼');
+        });
+    });
+
     describe("#setText()", function() {
 
         it("check text", function() {
@@ -27,7 +41,7 @@ describe("Button Tests", function() {
         it("check event", function() {
 
             var flag = false;
-            this.button.on('nb-button_text-set', function() {
+            this.button.on('nb-text-set', function() {
                 flag = true;
             });
 
@@ -54,7 +68,7 @@ describe("Button Tests", function() {
 
         it("check event", function() {
             var flag = false;
-            this.button.on('nb-button_url-set', function() {
+            this.button.on('nb-url-set', function() {
                 flag = true;
             });
 
@@ -83,7 +97,7 @@ describe("Button Tests", function() {
         it("check event", function() {
             var flag = true;
 
-            this.button.on('nb-button_disabled', function() {
+            this.button.on('nb-disabled', function() {
                 flag = false;
             });
 
@@ -102,7 +116,7 @@ describe("Button Tests", function() {
 
         it("check event", function() {
             var flag = false;
-            this.button.on('nb-button_enabled', function() {
+            this.button.on('nb-enabled', function() {
                 flag = true;
             });
 
@@ -112,16 +126,51 @@ describe("Button Tests", function() {
         });
     });
 
+    describe("#focus()", function() {
+        it("should throws nb-focused event", function() {
+            var handlerWorks = false;
+            this.button.on('nb-focused', function() {
+                handlerWorks = true;
+            });
+
+            this.button.focus();
+
+            expect(handlerWorks).to.be.ok();
+        });
+
+
+        it("should be in focus", function() {
+            this.button.focus();
+            expect($(document.activeElement).attr('id')).to.equal('button');
+        });
+    });
+
+    describe("#blur()", function() {
+        it("should not to be in focus", function() {
+            this.button.focus();
+            this.button.blur();
+            expect($(document.activeElement)).not.equal('button');
+        });
+
+        it("should throws nb-blured event", function() {
+            var handlerWorks = false;
+            this.button.on('nb-blured', function() {
+                handlerWorks = true;
+            });
+            this.button.blur();
+
+            expect(handlerWorks).to.be.ok();
+        });
+    });
+
     describe("#destroy()", function() {
 
         beforeEach(function() {
             sinon.spy($.fn, 'button');
-            sinon.spy(nb, 'destroy');
         });
 
         afterEach(function() {
             $.fn.button.restore();
-            nb.destroy.restore();
         });
 
         it("should call $.fn.button('destroy')", function() {
@@ -129,11 +178,9 @@ describe("Button Tests", function() {
             expect($.fn.button.calledWithExactly('destroy')).to.be.equal(true);
         });
 
-        it("should call nb.destroy('button')", function() {
+        it("should destroy nb.block", function() {
             this.button.destroy();
-            expect(nb.destroy.calledWithExactly('button')).to.be.equal(true);
+            expect(nb.hasBlock($('#button')[0])).to.be.equal(false);
         });
     });
-
-
 });

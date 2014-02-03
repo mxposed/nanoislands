@@ -1,6 +1,10 @@
 describe("Toggler Tests", function() {
 
     beforeEach(function() {
+        var result = yr.run('main', {toggler: true});
+        $('.content').html(result);
+
+        nb.init();
         this.toggler = nb.find('toggler');
     });
 
@@ -20,6 +24,12 @@ describe("Toggler Tests", function() {
             expect(toggler.isEnabled()).to.be.equal(false);
         });
 
+    });
+
+    describe('#getType()', function() {
+        it('should return toggler type', function() {
+            expect(this.toggler.getType()).to.be.equal('toggler');
+        });
     });
 
     describe("#getValue()", function() {
@@ -42,9 +52,9 @@ describe("Toggler Tests", function() {
             expect(this.toggler.$control.attr('name')).to.be.equal('new-name');
         });
 
-        it("should throws nb-input_value-set event", function() {
+        it("should throws nb-value-set event", function() {
             var handlerWorks = false;
-            this.toggler.on('nb-toggler_value-set', function() {
+            this.toggler.on('nb-value-set', function() {
                 handlerWorks = true;
             });
             this.toggler.setValue('Vadim');
@@ -69,9 +79,9 @@ describe("Toggler Tests", function() {
             expect(this.toggler.$control.attr('name')).to.be.equal('new-name');
         });
 
-        it("should throws nb-input_name-set event", function() {
+        it("should throws nb-name-set event", function() {
             var handlerWorks = false;
-            this.toggler.on('nb-toggler_name-set', function() {
+            this.toggler.on('nb-name-set', function() {
                 handlerWorks = true;
             });
             this.toggler.setName('new-name');
@@ -113,7 +123,7 @@ describe("Toggler Tests", function() {
         it("check event", function() {
             var flag = true;
 
-            this.toggler.on('nb-toggler_disabled', function() {
+            this.toggler.on('nb-disabled', function() {
                 flag = false;
             });
 
@@ -132,7 +142,7 @@ describe("Toggler Tests", function() {
 
         it("check event", function() {
             var flag = false;
-            this.toggler.on('nb-toggler_enabled', function() {
+            this.toggler.on('nb-enabled', function() {
                 flag = true;
             });
 
@@ -150,7 +160,7 @@ describe("Toggler Tests", function() {
 
         it("check event", function() {
             var flag = false;
-            this.toggler.on('nb-toggler_checked', function() {
+            this.toggler.on('nb-checked', function() {
                 flag = true;
             });
 
@@ -168,7 +178,7 @@ describe("Toggler Tests", function() {
 
         it("check event", function() {
             var flag = false;
-            this.toggler.on('nb-toggler_unchecked', function() {
+            this.toggler.on('nb-unchecked', function() {
                 flag = true;
             });
 
@@ -202,21 +212,48 @@ describe("Toggler Tests", function() {
         });
 
     });
+    describe("#focus()", function() {
+        it("should throws nb-focused event", function() {
+            var handlerWorks = false;
+            this.toggler.on('nb-focused', function() {
+                handlerWorks = true;
+            });
 
-    describe("#destroy()", function() {
+            this.toggler.focus();
 
-        beforeEach(function() {
-            sinon.spy(nb, 'destroy');
+            expect(handlerWorks).to.be.ok();
         });
 
-        afterEach(function() {
-            nb.destroy.restore();
-        });
 
-        it("should call nb.destroy('input')", function() {
-            this.toggler.destroy();
-            expect(nb.destroy.calledWithExactly('toggler')).to.be.equal(true);
+        it("should be in focus", function() {
+            this.toggler.focus();
+            expect($(document.activeElement)[0]).to.equal(this.toggler.$control[0]);
         });
     });
 
+    describe("#blur()", function() {
+        it("should not to be in focus", function() {
+            this.toggler.focus();
+            this.toggler.blur();
+            expect($(document.activeElement)).not.equal('toggler');
+        });
+
+        it("should throws nb-blured event", function() {
+            var handlerWorks = false;
+            this.toggler.on('nb-blured', function() {
+                handlerWorks = true;
+            });
+            this.toggler.blur();
+
+            expect(handlerWorks).to.be.ok();
+        });
+    });
+
+
+    describe("#destroy()", function() {
+        it("should destroy nb.block", function() {
+            this.toggler.destroy();
+            expect(nb.hasBlock($('#toggler')[0])).to.be.equal(false);
+        });
+    });
 });

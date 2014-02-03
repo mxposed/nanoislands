@@ -1,6 +1,5 @@
 nb.define('input-group', {
     events: {
-        'init': 'oninit',
         'click': 'oninit',
         'disable': 'onDisable',
         'enable': 'onEnable'
@@ -8,8 +7,7 @@ nb.define('input-group', {
 
     oninit: function() {
         var that = this;
-        that.$node = $(this.node);
-        that.disabled = this.data()['disabled'];
+        that.disabled = this.nbdata()['disabled'];
         $(this.children()).each(function() {
             if (this.$node.hasClass('nb-input')) {
                 that.input = this;
@@ -35,4 +33,4 @@ nb.define('input-group', {
         this.button.enable();
         this.disabled = false;
     }
-});
+}, 'base');

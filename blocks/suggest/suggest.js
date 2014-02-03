@@ -165,7 +165,6 @@
 
     nb.define('suggest', {
         events: {
-            'init': 'oninit',
             'close': 'onClose',
             'disable': 'onDisable',
             'enable': 'onEnable'
@@ -176,7 +175,6 @@
          * @fires 'nb-suggest_inited'
          */
         oninit: function() {
-            this.$node = $(this.node);
 
             this.input = this.children()[0];
 
@@ -269,12 +267,25 @@
         },
 
         /**
-         * Searcch value in the source array and open suggest popup
+         * Search value in the source array and open suggest popup
          * @param  {string | number} value
          */
         search: function(value) {
             this.$input.suggest("search", value);
+        },
+
+        /**
+         * Destroy the suggest
+         * @fires 'nb-select_destroyed'
+         */
+        destroy: function() {
+            if (this.$input && this.$input.data('ui.suggest')) {
+                this.$input.suggest('destroy');
+            }
+            this.trigger('nb-suggest_destroyed');
+            this.nbdestroy();
         }
-    });
+
+    }, 'base');
 
 })();

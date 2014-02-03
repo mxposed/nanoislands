@@ -1,0 +1,54 @@
+match .checkbox {
+
+    nb-checkbox({
+        "value": "my-value"
+        "type": "button"
+        "id": "checkbox-button"
+    })
+
+    nb-checkbox({
+        "value": "my-value"
+        "type": "checkbox"
+        "id": "checkbox-check"
+    })
+
+    nb-checkbox({
+        "value": "my-value"
+        "type": "radio"
+        "id": "checkbox-radio"
+    })
+
+    nb-checkbox({
+        "value": "my-value"
+        "checked": true()
+        "content": "Button"
+        "id": "checkbox-checked"
+    })
+
+    nb-checkbox({
+        "value": "my-value"
+        "disabled": true()
+        "content": "Button"
+        "id": "checkbox-disabled"
+    })
+
+    nb-checkbox({
+        "value": "my-value"
+        "content": "Button"
+        "id": "checkbox-tabindex"
+        "tabindex": "-1"
+    })
+
+    nb-checkbox({
+        "value": "my-value"
+        "content": "Button"
+        "type": "button"
+        "id": "checkbox-pseudo-button"
+        "theme": "pseudo"
+    })
+
+    nb-checkbox({
+        "content": "Button"
+        "id": "checkbox-without-attr-value"
+    })
+}

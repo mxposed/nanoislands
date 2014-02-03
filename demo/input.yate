@@ -31,6 +31,68 @@ func input-length() {
     nb-input(block)
 }
 
+func input-multiline() {
+    block = {
+        'type': 'multiline'
+    }
+    nb-input(block)
+}
+
+func input-ghost() {
+    block = {
+        'ghost': true()
+    }
+    nb-input(block)
+}
+
+func input-reset() {
+    block = {
+        'reset': true()
+        'size': 'm'
+        'content': 'privet'
+    }
+    nb-input(block)
+}
+
+func input-small-reset() {
+    block = {
+        'reset': true()
+        'size': 's'
+        'content': 'privet'
+    }
+    nb-input(block)
+}
+
+func input-left-right() {
+    block = {
+        'leftContent': 'Prefix...'
+        'rightContent': '...postfix'
+    }
+    nb-input(block)
+}
+
+func input-textarea-reset() {
+    block = {
+        'reset': true()
+        'size': 'm'
+        'type': 'multiline'
+        'content': 'privet'
+    }
+    nb-input(block)
+}
+
+func input-error() {
+    block = {
+        'content': 'Здесь будет ошибка'
+        'error': {
+            'direction': 'right'
+            'content': 'Все плохо!!!'
+        }
+    }
+
+    nb-input(block)
+}
+
 func inputs() {
     <div class="demo-section">
         <div class="demo-h3">
@@ -56,7 +118,7 @@ func inputs() {
         <div class="demo-h3">
             'Disabled '
             <span class="demo-code demo-code_small">
-                '.nb-input_disabled'
+                '.nb-disabled'
             </span>
         </div>
 
@@ -68,5 +130,56 @@ func inputs() {
         </div>
 
         show(input-length())
+    </div>
+    <div class="demo-section">
+        <div class="demo-h3">
+            'Multiline'
+        </div>
+
+        show(input-multiline())
+    </div>
+    <div class="demo-section">
+        <div class="demo-h3">
+            'Multiline with reset'
+        </div>
+
+        show(input-textarea-reset())
+    </div>
+    <div class="demo-section">
+        <div class="demo-h3">
+            'Ghost'
+        </div>
+
+        show(input-ghost())
+    </div>
+    <div class="demo-section">
+        <div class="demo-h3">
+            'Reset'
+        </div>
+
+        show(input-reset())
+    </div>
+    <div class="demo-section">
+        <div class="demo-h3">
+            'Small reset'
+        </div>
+
+        show(input-small-reset())
+    </div>
+
+    <div class="demo-section">
+        <div class="demo-h3">
+            'Postfix, prefix'
+        </div>
+
+        show(input-left-right())
+    </div>
+
+    <div class="demo-section">
+        <div class="demo-h3">
+            'Error'
+        </div>
+
+        show(input-error())
     </div>
 }
