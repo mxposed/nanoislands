@@ -33,10 +33,9 @@
     "expect.js": "*",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-shell": "~0.6.4",
-    "universal-jst": "https://github.com/abalandin/universal-jst/tarball/master"
+    "universal-jst": "git://github.com/wookiehangover/universal-jst.git"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "engines": {
     "node": "*"
   },
