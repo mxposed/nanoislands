@@ -427,7 +427,8 @@
                     },
                     appendTo: params.appendTo,
                     position: {
-                        using: using
+                        using: using,
+                        fixed: true
                     },
                     autoclose: typeof how.autoclose !== 'undefined' ? how.autoclose : true
                 });
