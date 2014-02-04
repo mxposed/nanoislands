@@ -17,7 +17,7 @@
     "stylobate": "0.22.x",
     "stylobate-islands": "0.21.x",
     "yate": "0.0.64",
-    "borschik": "0.4.x",
+    "borschik": "0.4.1",
     "autoprefixer": "1.x",
     "stylus": "0.42.x",
     "csso": "1.3.x",
@@ -29,11 +29,11 @@
     "mocha-phantomjs": "*",
     "phantomjs": "*",
     "sinon": "*",
-    "jscs": "1.0.11",
+    "jscs": "1.0.0",
     "expect.js": "*",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-shell": "~0.6.4",
-    "universal-jst": "https://github.com/abalandin/universal-jst/tarball/master"
+    "universal-jst": "git://github.com/abalandin/universal-jst.git"
   },
   "devDependencies": {
   },
