@@ -404,7 +404,8 @@
                 },
                 appendTo: params.appendTo,
                 position: {
-                    using: using
+                    using: using,
+                    fixed: true
                 }
             });
 
