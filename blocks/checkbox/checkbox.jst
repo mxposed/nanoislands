@@ -22,9 +22,9 @@ if (data.checked) {
     attrs.checked = 'checked';
 }
 
-%><label <%= JST._attrs({ classes: classes, nb: nb, attrs: {'for': data.id}}) %>><%
+%><label <%= JST._attrs({ source: data, classes: classes, nb: nb, attrs: {'for': data.id}}) %>><%
 
-    %><input <%= JST._attrs({ source: data, classes: ['nb-checkbox__input'], attrs: attrs}) %> /><%
+    %><input <%= JST._attrs({ classes: ['nb-checkbox__input'], attrs: attrs}) %> /><%
 
     %><span class="nb-checkbox__flag nb-checkbox__flag_type_<%= data.type %>"><%
         %><span class="nb-checkbox__flag__icon"></span><%
