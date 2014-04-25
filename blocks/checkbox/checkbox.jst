@@ -5,10 +5,7 @@ var attrs = {};
 
 if (!data.type) { data.type = 'checkbox'; }
 attrs.type = data.type;
-
-if (!data.id) {
-    data.id = JST._uniq({prefix: 'nb-checkbox_'});
-}
+attrs.id = JST._uniq({prefix: 'nb-checkbox_'});
 
 classes.push('nb-checkbox_size_' + (data.size || 'm'));
 classes.push('nb-checkbox_type_' + data.type);
@@ -22,7 +19,7 @@ if (data.checked) {
     attrs.checked = 'checked';
 }
 
-%><label <%= JST._attrs({ source: data, classes: classes, nb: nb, attrs: {'for': data.id}}) %>><%
+%><label <%= JST._attrs({ source: data, classes: classes, nb: nb, attrs: {'for': attrs.id}}) %>><%
 
     %><input <%= JST._attrs({ classes: ['nb-checkbox__input'], attrs: attrs}) %> /><%
 
