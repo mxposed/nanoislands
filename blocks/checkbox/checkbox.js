@@ -40,6 +40,7 @@ nb.define('checkbox', {
      */
     check: function() {
         if (this.isEnabled()) {
+            var wasChecked = this.isChecked();
             this.$control.prop({
                 'indeterminate': false,
                 'checked': true
@@ -47,7 +48,7 @@ nb.define('checkbox', {
 
             this.trigger('nb-checked', this);
 
-            if (!this.isChecked()) {
+            if (!wasChecked) {
                 this.trigger('nb-changed', this);
             }
         }
@@ -61,13 +62,14 @@ nb.define('checkbox', {
      */
     uncheck: function() {
         if (this.isEnabled()) {
+            var wasChecked = this.isChecked();
             this.$control.prop({
                 'indeterminate': false,
                 'checked': false
             });
             this.trigger('nb-unchecked', this);
 
-            if (this.isChecked()) {
+            if (wasChecked) {
                 this.trigger('nb-changed', this);
             }
         }
