@@ -1,44 +1,65 @@
 <%
-var nb = ['checkbox'];
-var classes = ['nb-checkbox', '_init'];
-var attrs = {};
+    var nb = ['checkbox'];
+    var label_classes = ['nb-checkbox', '_init', 'nb-checkbox_size_' + (data.size || 'm')];
+    var span_classes = ['nb-checkbox__label'];
+    var attrs = {};
 
-if (!data.type) { data.type = 'checkbox'; }
-attrs.type = data.type;
-attrs.id = JST._uniq({prefix: 'nb-checkbox_'});
+    if (!data.type) { data.type = 'checkbox'; } 
+    if (data.type == 'button'){
+        attrs.type = 'checkbox';
+        span_classes.push('nb-button');
+        span_classes.push('nb-button_size_' + (data.size || 'm'));
+        span_classes.push('nb-button_theme_' + (data.theme || 'normal'));   
+    } else {
+        attrs.type = data.type;
+    }
+    
+    attrs.id = JST._uniq({prefix: 'nb-checkbox_'});
 
-classes.push('nb-checkbox_size_' + (data.size || 'm'));
-classes.push('nb-checkbox_type_' + data.type);
+    label_classes.push('nb-checkbox_type_' + data.type);
 
-if (data.disabled) {
-    classes.push('is-disabled');
-    attrs.disabled = 'disabled';
-}
+    if (data.disabled) {
+        label_classes.push('is-disabled');
+        attrs.disabled = 'disabled';
+    }
 
-if (data.checked) {
-    attrs.checked = 'checked';
-}
+    if (data.checked) {
+        attrs.checked = 'checked';
+    }
 
-if (data.name) {
-    attrs.name = data.name;
-}
+    if (data.name) {
+        attrs.name = data.name;
+    }
 
-if (data.value) {
-    attrs.value = data.value;
-}
+    if (data.value) {
+        attrs.value = data.value;
+    }
 
-if (data.tabindex) {
-    attrs.tabindex = data.tabindex;
-}
+    if (data.tabindex) {
+        attrs.tabindex = data.tabindex;
+    }
+%>
 
-%><label <%= JST._attrs({ source: data, classes: classes, nb: nb, attrs: {'for': attrs.id}}) %>><%
+<label <%= JST._attrs({ source: data, classes: label_classes, nb: nb, attrs: {'for': attrs.id}}) %>>
+    <input <%= JST._attrs({ classes: ['nb-checkbox__input'], attrs: attrs}) %> />
 
-    %><input <%= JST._attrs({ classes: ['nb-checkbox__input'], attrs: attrs}) %> /><%
+    <% if (data.type != 'button') { %>
+        <span class="nb-checkbox__flag nb-checkbox__flag_type_<%= data.type %>">
+            <span class="nb-checkbox__flag__icon"></span>
+        </span>
+    <% } %>
 
-    %><span class="nb-checkbox__flag nb-checkbox__flag_type_<%= data.type %>"><%
-        %><span class="nb-checkbox__flag__icon"></span><%
-    %></span><%
-
-    %><span class="nb-checkbox__label"><%= data.text %></span><%
-
- %></label>
+    <span <%= JST._attrs({ classes: span_classes}) %>>
+        <% if (data.type == 'button') { %>
+            <span class="nb-button__text">
+                <% if (data.text) { %>
+                    <%= data.text %>
+                <% } %>
+            </span>
+        <% } else { %>
+            <% if (data.text) { %>
+                <%= data.text %>
+            <% } %>
+        <% } %>
+    </span>
+ </label>
