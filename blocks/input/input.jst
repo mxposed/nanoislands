@@ -9,8 +9,12 @@ if (data.disabled) {
     attrs.disabled = 'disabled';
     attrs['data-nb-disabled'] = true;
 }
+if (data.ghost) {
+    classes.push('is-ghost');
+    attrs['data-nb-ghost'] = true;
+}
 
-if (data.label || data.left || data.right || data.reset) {//complex
+if (data.label || data.left || data.right || data.reset || data.ghost) { //complex
 
     attrs['data-nb-type'] = 'complex';
     classes.push('nb-input_type_complex');
@@ -27,12 +31,12 @@ if (data.label || data.left || data.right || data.reset) {//complex
             input_attrs['disabled'] = 'disabled';
         }
         %><span class="nb-input__content"><%
-            %><input <%= JST['_attrs']({ classes: ['nb-input__controller'], attrs: input_attrs }) %>> value="<%-data.content%>" /><%
+            %><input <%= JST['_attrs']({ classes: ['nb-input__controller'], attrs: input_attrs }) %> value="<%-data.content%>" /><%
             %><span class="nb-input__view">&nbsp;</span><%
         %></span><%
     %></label><%
 
-} else {//simple
+} else { //simple
 
     attrs['data-nb-type'] = 'simple';
     classes.push('nb-input_type_simple');
